@@ -1,0 +1,77 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>win.php</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+.S18 {
+	color: #0000FF;
+	background: #FFEFBF;
+}
+span {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+.S118 {
+	color: #000033;
+	background: #FFF8F8;
+}
+.S119 {
+	color: #007F00;
+	background: #FFF8F8;
+}
+.S121 {
+	font-style: italic;
+	color: #7F007F;
+	background: #FFF8F8;
+}
+.S122 {
+	color: #CC9900;
+	background: #FFF8F8;
+}
+.S123 {
+	font-style: italic;
+	color: #00007F;
+	background: #FFF8F8;
+}
+.S127 {
+	color: #000000;
+	background: #FFF8F8;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S18">&lt;?php</span><br />
+<br />
+<span class="S118">using System</span><span class="S127">;</span><br />
+<span class="S118">using System</span><span class="S127">::</span><span class="S118">Windows</span><span class="S127">::</span><span class="S118">Forms</span><span class="S127">;</span><br />
+<br />
+<span class="S123">$win</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> Form </span><span class="S127">();</span><br />
+<span class="S123">$win</span><span class="S127">-&gt;</span><span class="S118">Text </span><span class="S127">=</span><span class="S118"> </span><span class="S119">"blah !"</span><span class="S127">;</span><br />
+<br />
+<span class="S123">$bt</span><span class="S118"> </span><span class="S127">=</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> Button </span><span class="S127">();</span><br />
+<span class="S123">$bt</span><span class="S127">-&gt;</span><span class="S118">Text </span><span class="S127">=</span><span class="S118"> </span><span class="S119">"click me, ooh, click me !"</span><span class="S127">;</span><br />
+<span class="S123">$bt</span><span class="S127">-&gt;</span><span class="S118">Width </span><span class="S127">=</span><span class="S118"> </span><span class="S123">$win</span><span class="S127">-&gt;</span><span class="S118">Width </span><span class="S127">-</span><span class="S118"> </span><span class="S122">4</span><span class="S127">;</span><br />
+<br />
+<span class="S123">$win</span><span class="S127">-&gt;</span><span class="S118">Controls</span><span class="S127">-&gt;</span><span class="S118">Add </span><span class="S127">(</span><span class="S123">$bt</span><span class="S127">);</span><br />
+<br />
+<span class="S118">add_event </span><span class="S127">(</span><span class="S123">$bt</span><span class="S127">,</span><span class="S118"> </span><span class="S119">"Click"</span><span class="S127">,</span><span class="S118"> </span><span class="S121">new</span><span class="S118"> EventHandler </span><span class="S127">(</span><span class="S121">null</span><span class="S127">,</span><span class="S118"> ButtonClicked</span><span class="S127">));</span><br />
+<br />
+<span class="S123">$win</span><span class="S127">-&gt;</span><span class="S118">ShowDialog </span><span class="S127">();</span><br />
+<br />
+<span class="S121">function</span><span class="S118"> ButtonClicked </span><span class="S127">(</span><span class="S123">$o</span><span class="S127">,</span><span class="S118"> EventArgs </span><span class="S123">$args</span><span class="S127">)</span><span class="S118"> </span><span class="S127">{</span><br />
+<span class="S118">&nbsp; &nbsp; MessageBox</span><span class="S127">::</span><span class="S118">Show </span><span class="S127">(</span><span class="S119">"foo bared !"</span><span class="S127">);</span><br />
+<span class="S127">}</span><br />
+<br />
+<span class="S18">?&gt;</span><br />
+<span class="S0"></span></span>
+</body>
+</html>

@@ -1,0 +1,76 @@
+---
+layout: post
+title: Linking all the way down
+---
+Do you remember <a href="http://tirania.org/blog/archive/2004/Dec-01.html">this post</a>?
+
+If you do so, I'm sure you know, what I'm going to show you. A formidable use of the <a href="http://evain.net/blog/articles/2006/08/21/link-to-link">new linker</a>.
+
+What do you need? First you need an application. I've reused a very small program I wrote a bunch of month with <a href="http://www.db4o.com">db4o</a>. It simply allows you to persist a few objects Person in a db4o database, and to retrieve them. But it's sooo cool that I'd like to make it a standalone application.
+
+It has a very friendly command line interface:
+
+<img src="http://evain.net/public/db4o_linker_test.png" />
+
+Very nice isn't it? So now, let's link it so that I have the minimum set of the assemblies my program use.
+
+<pre>
+jbevain@avalon:/tmp/linker$ mono linker.exe -o persons -a persons.exe -p false
+jbevain@avalon:/tmp/linker$ cp persons.yap persons/
+jbevain@avalon:/tmp/linker$ cd persons/
+</pre>
+
+The yap file is db4o's database.
+
+Please note that in SVN, I've disabled the ability to link the assembly mscorlib.dll. It's a very special assembly which is of course very close to the runtime. So if ever you want to remove stuff from it, you have to be very frugal, so you don't remove stuff used within the runtime. And it seems that I've not identified everything used. So it tend to be pretty unstable :)
+
+But for the time being, it's fine. Now, let's create a standalone application from this great piece of code.
+
+<pre>
+jbevain@avalon:/tmp/linker/persons$ mkbundle
+OS is: Linux
+Sources: 0 Auto-dependencies: False
+Usage is: mkbundle [options] assembly1 [assembly2...]
+
+Options:
+    -c              Produce stub only, do not compile
+    -o out          Specifies output filename
+    -oo obj         Specifies output filename for helper object file
+    -L path         Adds `path' to the search path for assemblies
+    --nodeps        Turns off automatic dependency embedding (default)
+    --deps          Turns on automatic dependency embedding
+    --keeptemp      Keeps the temporary files
+    --config F      Bundle system config file `F'
+    --config-dir D  Set MONO_CFG_DIR to `D'
+    --static        Statically link to mono libs
+    -z          Compress the assemblies before embedding.
+
+jbevain@avalon:/tmp/linker/persons$ mkbundle -o persons --nodeps ./persons.exe ./db4o.dll ./mscorlib.dll
+OS is: Linux
+Sources: 3 Auto-dependencies: False
+   embedding: /tmp/linker/persons/persons.exe
+   embedding: /tmp/linker/persons/db4o.dll
+   embedding: /tmp/linker/persons/mscorlib.dll
+Compiling:
+as -o /tmp/tmp47dda943.tmp.o temp.s
+cc -ggdb -o persons -Wall temp.c `pkg-config --cflags --libs mono`  /tmp/tmp47dda943.tmp.o
+Done
+jbevain@avalon:/tmp/linker/persons$ mkdir standalone
+jbevain@avalon:/tmp/linker/persons$ mv persons standalone/
+jbevain@avalon:/tmp/linker/persons$ mv persons.yap standalone/
+jbevain@avalon:/tmp/linker/persons$ cd standalone/
+jbevain@avalon:/tmp/linker/persons/standalone$ ./persons
+Persons manager
+l
+All persons:
+Person, name: Anaelle, age: 19
+Person, name: Jb Evain, age: 23
+Person, name: Reg, age: 24
+q
+jbevain@avalon:/tmp/linker/persons/standalone$
+</pre>
+
+Et voil√ , we now have a standalone application that works like a charm, and which contains, well almost, only what's needed to use it. That's so great!
+
+Ok, let's go back to the code, I need to make the linking against corlib working.
+

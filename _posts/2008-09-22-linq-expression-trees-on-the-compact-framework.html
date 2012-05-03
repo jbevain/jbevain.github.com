@@ -1,0 +1,22 @@
+---
+layout: post
+title: LINQ Expression Trees on the Compact Framework
+---
+<a href="http://www.flickr.com/photos/jbevain/224749567/" title="Red Church, Blue Sky by Jb Evain, on Flickr"><img src="http://farm1.static.flickr.com/90/224749567_0e49c30cd5.jpg" width="500" height="333" alt="Red Church, Blue Sky" style="border: 2px solid black" /></a>
+
+A week ago, I was <a href="http://evain.net/blog/articles/2008/09/14/c-3-and-linq-on-net-2">writing</a> about the ability to use <a href="http://www.mono-project.com">Mono</a>'s System.Core to run C# 3 and LINQ applications on .net 2.
+
+A few months ago, I was <a href="http://evain.net/blog/articles/2008/02/06/an-elegant-linq-to-db4o-provider-and-a-few-linq-tricks">writing</a> about the new LINQ provider that friends at <a href="http://developer.db4o.com">db4o</a> released. This LINQ provider uses LINQ expression trees to optimize LINQ queries, turning them into db4o's native query language.
+
+Today I'm going to write about a cute new hack from our friends at db4o.
+
+If the 3.5 version of the Compact Framework comes with a System.Core, and a LINQ to objects implementation, it doesn't contain the namespace System.Linq.Expressions, which is used by all optimized LINQ providers. What those fine folks did, was simply to take Mono's implementation of this namespace. There was one issue with that approach. Expression Trees can be compiled at runtime, and that uses System.Reflection.Emit, that the Compact Framework doesn't have.
+
+A nice thing is that folks at <a href="http://www.mainsoft.com">Mainsoft</a> contributed to Mono's System.Core an expression interpreter, which allows you to use the full LINQ expression trees without using System.Reflection.Emit. They sent me the patches they have for the expression interpreter to make it pass the full test suite we have, so I'll integrate it shortly.
+
+And voilà, just by using Mono's implementation of System.Core, and by hacking a little in it, to make it compile on the Compact Framework, they've been able to produce a new assembly, System.Linq.Expressions.dll. You just have to reference it in your Compact Framework project, and it will let you use LINQ expression trees, which allows you to write optimized LINQ providers for the Compact Framework.
+
+Of course, this is completely open-source and licensed under the MIT/X11. For now, you can find the code in <a href="https://source.db4o.com/db4o/trunk/db4o.net/Libs/compact-3.5/System.Linq.Expressions/">db4o's repository</a>, but I'll backport the changes they did to the LINQ expression interpreter, so that people that want to use it can use our code base directly.
+
+Congrats to you guys for making the finest choice in the third party code you ship!
+

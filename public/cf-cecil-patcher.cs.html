@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+ <head><title>cf-cecil-patcher.cs</title>
+  <meta content="SubEthaEdit - http://www.codingmonkeys.de/subethaedit/" name="generator" />
+  <meta name="last-modified" content="Fri, 31 Mar 2006 00:05:24 GMT" />
+<meta name="DC.Date" content="2006-03-31" />
+<meta name="DC.Creator" content="jbevain" />
+<meta name="DC.Contributor" content="jbevain" />
+
+  <style type="text/css">
+h1 {
+    font-family: Arial, sanserif;
+    margin-bottom: 5px;
+}
+
+h4 {
+    padding-bottom:0px;
+    padding-right:10px;
+    margin-bottom:0.5em;
+    margin-top:10px ;
+    font-size:15px;
+    color:#000;
+}
+
+table { 
+    border-collapse: collapse;
+    margin: 5px;
+    font-family: Arial, sanserif;
+}
+
+th {
+    background-color:#ddd;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size:small;
+    text-align: left;
+    padding: 1px 4px 1px 4px;
+}
+
+th img {
+    position:relative;
+    top:1px;
+}
+
+tr {
+    background-color: #FFF;
+}
+
+tr.Alternate {
+    background-color: #EEF;
+}
+
+td {
+    border-bottom:1px solid #777;
+    font-size: 12px;
+    color:#555;
+    text-align:left;
+    vertical-align:center;
+    padding: 4px 15px;
+}
+
+td.ContributorName {
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+
+td.VisitorName {
+    font-weight: bold;
+    font-size: 12px;
+}
+  </style>
+ </head>
+ <body><h1>cf-cecil-patcher.cs</h1>
+
+<p>Friday, March 31, 2006</p><div style="text-align:left;color:#000000; background-color:#ffffff; border:solid black 1px; padding:0.5em 1em 0.5em 1em; overflow:auto;font-size:small; font-family:monospace; "><span style="color:#216d23;">//<br />
+// cf-cecil-patcher.cs<br />
+//<br />
+// Author:<br />
+// &nbsp;&nbsp;Jb Evain (jbevain@gmail.com)<br />
+//<br />
+// (C) 2005 Jb Evain<br />
+//<br />
+// Permission is hereby granted, free of charge, to any person obtaining<br />
+// a copy of this software and associated documentation files (the<br />
+// &quot;Software&quot;), to deal in the Software without restriction, including<br />
+// without limitation the rights to use, copy, modify, merge, publish,<br />
+// distribute, sublicense, and/or sell copies of the Software, and to<br />
+// permit persons to whom the Software is furnished to do so, subject to<br />
+// the following conditions:<br />
+//<br />
+// The above copyright notice and this permission notice shall be<br />
+// included in all copies or substantial portions of the Software.<br />
+//<br />
+// THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,<br />
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<br />
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<br />
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<br />
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<br />
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<br />
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br />
+//<br />
+</span><br />
+<span style="color:#0000cc;">using</span> System;<br />
+<span style="color:#0000cc;">using</span> System.Collections;<br />
+<br />
+<span style="color:#0000cc;">using</span> Mono.Cecil;<br />
+<br />
+<span style="color:#0000cc;">class</span> CompactFrameworkPatcher : BaseStructureVisitor {<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> <span style="color:#0000cc;">readonly</span> <span style="color:#0000cc;">byte</span> [] fwPkToken1 = <span style="color:#0000cc;">new</span> <span style="color:#0000cc;">byte</span> [] {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xb7, 0x7a, 0x5c, 0x56, 0x19, 0x34, 0xe0, 0x89<br />
+&nbsp;&nbsp;&nbsp;&nbsp;};<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> <span style="color:#0000cc;">readonly</span> <span style="color:#0000cc;">byte</span> [] fwPkToken2 = <span style="color:#0000cc;">new</span> <span style="color:#0000cc;">byte</span> [] {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0xb0, 0x3f, 0x5f, 0x7f, 0x11, 0xd5, 0x0a, 0x3a<br />
+&nbsp;&nbsp;&nbsp;&nbsp;};<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> <span style="color:#0000cc;">readonly</span> <span style="color:#0000cc;">byte</span> [] cfPkToken = <span style="color:#0000cc;">new</span> <span style="color:#0000cc;">byte</span> [] {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0x96, 0x9d, 0xb8, 0x05, 0x3d, 0x33, 0x22, 0xac<br />
+&nbsp;&nbsp;&nbsp;&nbsp;};<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> IDictionary mappableAssemblies = <span style="color:#0000cc;">new</span> Hashtable ();<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> CompactFrameworkPatcher ()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;mscorlib&quot;</span>, fwPkToken1);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System&quot;</span>, fwPkToken1);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System.Data&quot;</span>, fwPkToken1);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System.Drawing&quot;</span>, fwPkToken2);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System.Web.Services&quot;</span>, fwPkToken2);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System.Windows.Forms&quot;</span>, fwPkToken1);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;System.Xml&quot;</span>, fwPkToken1);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mappableAssemblies.Add (<span style="color:#88134f;">&quot;Microsoft.VisualBasic&quot;</span>, fwPkToken2);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">bool</span> CheckPublicKeyToken (AssemblyNameReference asm)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">if</span> (asm.PublicKeyToken == <span style="color:#0000cc;">null</span> || asm.PublicKeyToken.Length != <span style="color:#004ccc;">8</span>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span> <span style="color:#0000cc;">false</span>;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">byte</span> [] corresponding = mappableAssemblies [asm.Name] <span style="color:#0000cc;">as</span> <span style="color:#0000cc;">byte</span> [];<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">for</span> (<span style="color:#0000cc;">int</span> i = <span style="color:#004ccc;">0</span>; i &lt; <span style="color:#004ccc;">8</span>; i++)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">if</span> (asm.PublicKeyToken [i] != corresponding [i])<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span> <span style="color:#0000cc;">false</span>;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span> <span style="color:#0000cc;">true</span>;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">public</span> <span style="color:#0000cc;">override</span> <span style="color:#0000cc;">void</span> VisitAssemblyNameReferenceCollection (AssemblyNameReferenceCollection assemblies)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VisitCollection (assemblies);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">public</span> <span style="color:#0000cc;">override</span> <span style="color:#0000cc;">void</span> VisitAssemblyNameReference (AssemblyNameReference asm)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">if</span> (!mappableAssemblies.Contains (asm.Name))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span>;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">if</span> (!CheckPublicKeyToken (asm))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span>;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asm.Flags |= AssemblyFlags.Retargetable;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asm.PublicKeyToken = cfPkToken;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> <span style="color:#0000cc;">void</span> Main (<span style="color:#0000cc;">string</span> [] args)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">if</span> (args.Length != <span style="color:#004ccc;">1</span>) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage ();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">return</span>;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">string</span> file = args [<span style="color:#004ccc;">0</span>];<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AssemblyDefinition asm = AssemblyFactory.GetAssembly (file);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;asm.MainModule.AssemblyReferences.Accept (<span style="color:#0000cc;">new</span> CompactFrameworkPatcher ());<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AssemblyFactory.SaveAssembly (asm, file);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console.WriteLine (<span style="color:#88134f;">&quot;Assembly {0} patched&quot;</span>, file);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#0000cc;">static</span> <span style="color:#0000cc;">void</span> Usage ()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console.WriteLine (<span style="color:#88134f;">&quot;Mono Assembly To Compact Framework Patcher&quot;</span>);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console.WriteLine (<span style="color:#88134f;">&quot;usage: cf-patcher.exe assembly&quot;</span>);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+}</div>
+<div id="footer" style="text-align:center; font-size:10px; color:#555; font-family: sanserif;">
+<br />Page created with <a href="http://www.codingmonkeys.de/subethaedit/" style="color:#555;">SubEthaEdit</a>
+</div>
+</body></html>

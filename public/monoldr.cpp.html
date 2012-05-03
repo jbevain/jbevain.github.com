@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+ <head><title>monoldr.cpp</title>
+  <meta content="SubEthaEdit - http://www.codingmonkeys.de/subethaedit/" name="generator" />
+  <meta name="last-modified" content="Thu, 23 Mar 2006 14:31:14 GMT" />
+<meta name="DC.Date" content="2006-03-23" />
+<meta name="DC.Creator" content="jbevain" />
+<meta name="DC.Contributor" content="jbevain" />
+
+  <style type="text/css">
+h1 {
+    font-family: Arial, sanserif;
+    margin-bottom: 5px;
+}
+
+h4 {
+    padding-bottom:0px;
+    padding-right:10px;
+    margin-bottom:0.5em;
+    margin-top:10px ;
+    font-size:15px;
+    color:#000;
+}
+
+table { 
+    border-collapse: collapse;
+    margin: 5px;
+    font-family: Arial, sanserif;
+}
+
+th {
+    background-color:#ddd;
+    border-bottom: 1px solid #000;
+    border-top: 1px solid #000;
+    font-size:small;
+    text-align: left;
+    padding: 1px 4px 1px 4px;
+}
+
+th img {
+    position:relative;
+    top:1px;
+}
+
+tr {
+    background-color: #FFF;
+}
+
+tr.Alternate {
+    background-color: #EEF;
+}
+
+td {
+    border-bottom:1px solid #777;
+    font-size: 12px;
+    color:#555;
+    text-align:left;
+    vertical-align:center;
+    padding: 4px 15px;
+}
+
+td.ContributorName {
+    font-weight: bold;
+    color: #000;
+    font-size: 14px;
+}
+
+td.VisitorName {
+    font-weight: bold;
+    font-size: 12px;
+}
+  </style>
+ </head>
+ <body><h1>monoldr.cpp</h1>
+<table></table>
+
+<p>Thursday, March 23, 2006</p><div style="text-align:left;color:#000000; background-color:#ffffff; border:solid black 1px; padding:0.5em 1em 0.5em 1em; overflow:auto;font-size:small; font-family:monospace; "><span style="color:#236e25;">//<br />
+// monoldr.cpp<br />
+//<br />
+// Author:<br />
+// &nbsp;&nbsp;Jb Evain (jbevain@gmail.com)<br />
+//<br />
+// (C) 2005 Jb Evain<br />
+//<br />
+// Permission is hereby granted, free of charge, to any person obtaining<br />
+// a copy of this software and associated documentation files (the<br />
+// &quot;Software&quot;), to deal in the Software without restriction, including<br />
+// without limitation the rights to use, copy, modify, merge, publish,<br />
+// distribute, sublicense, and/or sell copies of the Software, and to<br />
+// permit persons to whom the Software is furnished to do so, subject to<br />
+// the following conditions:<br />
+//<br />
+// The above copyright notice and this permission notice shall be<br />
+// included in all copies or substantial portions of the Software.<br />
+//<br />
+// THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND,<br />
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF<br />
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND<br />
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE<br />
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION<br />
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION<br />
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.<br />
+//<br /></span><br />
+<br />
+<span style="color:#683821;">#include &quot;stdafx.h&quot;<br /></span><br />
+<br />
+BOOL STDMETHODCALLTYPE <span style="color:#003369;">MonoDllMain </span>(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;HINSTANCE &nbsp;&nbsp;hInst,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;DWORD &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dwReason,<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LPVOID &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lpReserved<br />
+&nbsp;&nbsp;&nbsp;&nbsp;)<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#003369;">printf </span>(<span style="color:#760f15;">&quot;MonoDllMain\n&quot;</span>);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#881350;">return</span> <span style="color:#881350;">TRUE</span>;<br />
+}<br />
+<br />
+<span style="color:#881350;">int</span> STDMETHODCALLTYPE <span style="color:#003369;">MonoExeMain </span>()<br />
+{<br />
+&nbsp;&nbsp;&nbsp;&nbsp;LPWSTR *szArgv;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#881350;">int</span> argc;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;szArgv = <span style="color:#003369;">CommandLineToArgvW </span>(<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#003369;">GetCommandLineW </span>(), &amp;argc);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#881350;">if</span><span style="color:#003369;"> </span>(szArgv == NULL)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#881350;">return</span> <span style="color:#0000ff;">1</span>;<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#003369;">printf </span>(<span style="color:#760f15;">&quot;MonoExeMain\n&quot;</span>);<br />
+<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#003369;">LocalFree </span>(szArgv);<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#881350;">return</span> <span style="color:#0000ff;">0</span>;<br />
+}<br />
+</div>
+<div id="footer" style="text-align:center; font-size:10px; color:#555; font-family: sanserif;">
+<br />Page created with <a href="http://www.codingmonkeys.de/subethaedit/" style="color:#555;">SubEthaEdit</a>
+</div>
+</body></html>

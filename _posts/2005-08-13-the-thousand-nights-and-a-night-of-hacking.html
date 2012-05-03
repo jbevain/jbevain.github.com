@@ -1,0 +1,89 @@
+---
+layout: post
+title: The Thousand Nights and a Night of Hacking
+---
+<br /><p>
+Hey world, it's 6am here in Paris, and I'm still in the front of my computer. But this morning, I feel just like happy, excited, and proud. Yeah, and tired too.
+</p>
+<p>
+I worked all night, and this morning, Cecil have written its first Hello World!. The code is not yet is SVN, it's still full of debug code, but heh, its works here :) 
+</p>
+<p>
+Here is the little application that emits this new and shiny hello world:
+</p>
+<pre class="csharpcode">
+<span class="kwrd">using</span> Mono.Cecil;
+<span class="kwrd">using</span> Mono.Cecil.Cil;
+
+<span class="kwrd">class</span> Test {
+
+    <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        IAssemblyDefinition asm = AssemblyFactory.DefineAssembly (
+            <span class="str">"hello"</span>, <span class="str">"HelloWorld"</span>, TargetRuntime.NET_1_1);
+
+        ITypeDefinition t = asm.MainModule.DefineType (
+            <span class="str">"Hello"</span>, <span class="str">"Test"</span>, TypeAttributes.Class, <span class="kwrd">typeof</span> (<span class="kwrd">object</span>));
+
+        IMethodDefinition meth = t.DefineMethod (
+            <span class="str">"Main"</span>, MethodAttributes.Static, <span class="kwrd">typeof</span> (<span class="kwrd">void</span>));
+
+        IMethodBody body = meth.DefineBody ();
+        ICilWorker cw = body.GetWorker ();
+        cw.Emit (OpCodes.Ldstr, <span class="str">"Hello from Cecil!"</span>);
+        cw.Emit (OpCodes.Call, <span class="kwrd">typeof</span> (Console).GetMethod (
+                <span class="str">"WriteLine"</span>, <span class="kwrd">new</span> Type [] {<span class="kwrd">typeof</span> (<span class="kwrd">string</span>)}));
+        cw.Emit (OpCodes.Ret);
+
+        IMethodDefinition ctor = t.DefineConstructor ();
+        body = ctor.DefineBody ();
+        cw = body.GetWorker ();
+        cw.Emit (OpCodes.Ldarg_0);
+        cw.Emit (OpCodes.Call,
+            <span class="kwrd">typeof</span> (<span class="kwrd">object</span>).GetConstructor (<span class="kwrd">new</span> Type [0]));
+        cw.Emit (OpCodes.Ret);
+
+        asm.EntryPoint = meth;
+
+        AssemblyFactory.SaveAssembly (
+            asm, <span class="str">"hello.exe"</span>, AssemblyKind.Console);
+    }
+}
+</pre>
+<p>
+The application is simple, and will looks familiar to everyone that already used System.Reflection.Emit. Of course there are some differences, but let see that later, just notice that Cecil understands both Cecil types, and classics System.Type. Oh, and once again, don't try this at home, it won't work. At least, it's not dangerous. As expected, if you execute this file using Mono, you'll be greeted:
+</p>
+<pre>
+newton:~/Sources/temp jbevain$ mono hello.exe 
+Hello from Cecil!
+</pre>
+<p>
+Don't expect Cecil to emit more things for the moment. But it's already not that bad. Let me show you another interesting feature. Imagine you need to generate some ponctual code, that you plan neither to keep, nor to save on the disk. The use case for the AssemblyBuilderAccess.Run enum value within System.Reflection.Emit. Let see how to do that!
+</p>
+<p>
+Add this import:
+</p>
+<pre class="csharpcode">
+<span class="kwrd">using</span> SR = System.Reflection;
+</pre>
+<p>
+And remove the last line of the code above, and replace it the following lines:
+</p>
+<pre class="csharpcode">
+        SR.Assembly a = AssemblyFactory.CreateReflectionAssembly (
+            asm, AssemblyKind.Console);
+        
+        a.GetType (<span class="str">"Test.Hello"</span>).GetMethod (
+            <span class="str">"Main"</span>, SR.BindingFlags.NonPublic |
+            SR.BindingFlags.Static
+        ).Invoke (<span class="kwrd">null</span>, <span class="kwrd">new</span> <span class="kwrd">object</span> [0]);
+</pre>
+<p>
+The assembly will be emitted in memory, and loaded as it in an AppDomain (the current one by default). Then you'll be able to work on it like any other assembly. Cool huh ? 
+</p>
+<p>
+So, tasks for tomorrow: clean the code, improve it, extend it, then it will go into SVN. As I'm happy, for no reason, here is <a href="http://evain.net/public/desktop.jpg">a picture of where Cecil is tinkered</a>. Please notice in the bottom right a good old xbox, that <a href="http://tirania.org/blog/archive/2003/Dec-09.html">used to</a> <a href="http://weblogs.asp.net/jkey/archive/2003/12/13/43422.aspx">be famous</a>. May it rest in peace.
+</p>
+<p>
+Hum, if the CLR and MS ildasm loads my fresh new hello world, it can't be run by lauching it just like another executable. It's not a valid Win32 executable it says. f**k you billy, I'll see that tomorrow, I'm going to sleep.
+</p>

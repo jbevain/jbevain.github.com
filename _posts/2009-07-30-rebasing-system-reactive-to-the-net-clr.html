@@ -1,0 +1,15 @@
+---
+layout: post
+title: Rebasing System.Reactive to the .net CLR
+---
+<a href="http://www.flickr.com/photos/jbevain/3489550358/" title="Purple rain by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3356/3489550358_d70e7147ec.jpg" width="500" height="333" alt="Purple rain" style="border: 2px solid black" /></a>
+
+There has been <a href="http://themechanicalbride.blogspot.com/2009/07/introducing-rx-linq-to-events.html">a</a> <a href="http://themechanicalbride.blogspot.com/2009/07/developing-with-rx-part-1-extension.html">lot</a> <a href="http://channel9.msdn.com/shows/Going+Deep/Expert-to-Expert-Brian-Beckman-and-Erik-Meijer-Inside-the-NET-Reactive-Framework-Rx/">of</a> <a href="http://www.infoq.com/news/2009/07/Reactive-Framework-LINQ-Events">interest</a> <a href="http://www.paulbatum.com/2009/07/reacting-to-reactive-framework-part-5.html">towards</a> the Rx framework lately. It's definitely an interesting piece of software, and the video linked on channel 9 is quite fascinating. The only issue is that the only assembly you can get right now is compiled against Silverlight, making it impossible to use on the traditional .net framework. Impossible, really?
+
+Well, I for one would not recommend it, but if you really can't wait to try it, you could use <a href="http://gist.github.com/158643">this little piece of code</a> which uses <a href="http://mono-project.com/Cecil">Cecil</a> to turn the assembly compiled against Silverlight into an assembly that will work on the .net framework. Of course the assembly will lose its strong name in the process. But at least, it will be usable.
+
+For instance, here's <a href="http://gist.github.com/158644">the sample that Jafar is showing on his blog</a>, running on Mono:
+
+<img src="http://evain.net/public/test-rx.png" />
+
+Update: don't miss the <a href="http://evain.net/blog/articles/2009/07/30/rebasing-system-reactive-to-the-net-clr#comments">comment</a> <a href="http://sebastien.lebreton.free.fr/">Sébastien</a> posted, and how he would do it with <a href="http://sebastien.lebreton.free.fr/reflexil/">Reflexil</a>.

@@ -1,0 +1,30 @@
+---
+layout: post
+title: An introduction to Mono.Merge
+---
+There's something I've been willing to do since I started Cecil. Imagine a tool that takes a set of assemblies, and merge them in a single one. That's not too hard to do using Cecil, but I've never took the time to do it. Well, thanks to Alex Prudkiy, who also contributed a few patches to the linker, we now have a brand new <span style="FONT-STYLE:italic">monomerge</span> tool.
+
+Let's take an easy example. This new monomerge<span style="FONT-STYLE:italic"> </span>tool have only one dependency beside of the core, Mono.Cecil. That means that if you want to send your tool to someone, you'll have to ship a copy of Mono.Cecil.dll also. But why not shipping only one assembly?
+
+Let's merge the merger! As usual, I'm pretty disappointed I can't show you some meaningful and colorful screen shots, but heh, that's a command tool, let's have a look at my console snapshot.
+
+<pre>
+jbevain@avalon:/tmp/merge$ ls -l
+total 364
+-rwxr-xr-x 1 jbevain jbevain 337920 2006-10-31 14:02 Mono.Cecil.dll
+-rwxr-xr-x 1 jbevain jbevain 24064 2006-10-31 14:06 monomerge.exe
+drwxr-xr-x 2 jbevain jbevain 4096 2006-10-31 14:15 output
+jbevain@avalon:/tmp/merge$ ~/devel/bin/mono monomerge.exe -out output/monomerge.exe monomerge.exe Mono.Cecil.dll
+jbevain@avalon:/tmp/merge$ cd output && ls -l
+total 348
+-rw-r--r-- 1 jbevain jbevain 351744 2006-10-31 14:16 monomerge.exe
+jbevain@avalon:/tmp/merge/output$ ~/devel/bin/mono monomerge.exe
+Mono CIL Merge
+monomerge [options] -out result_file primary assemly [files...]
+ --about About the Mono CIL Merge
+ --version Print the version number of the Mono CIL Merge
+ -out Specify the output file
+
+ Sample: monomerge -out output.exe input.exe input_lib.dll
+jbevain@avalon:/tmp/merge/output$
+</pre> &nbsp;Here we are, we have now a single monomerge.exe assembly, which contains both the merger and Mono.Cecil. Pretty neat isnt'it? Hmm, I'm sure you already seen where I want to go with this. Imagine a tool chain like:<br/> <br/> <ol> <li> use the <a href="http://mono-project.com/Linker" title="Linker">Linker</a> to reduce the size of a set of assemblies</li> <li> use the Merger to ship them in a single assembly</li> <li> use mkbundle to ship this single assembly plus the linker core in a single binary</li> </ol> <br/> That's the less space wasting solution I know for Mono and embedded users. Pretty cool huh? Anyway, if you want to give it a try, the code now lives <a href="http://mono.myrealbox.com/source/trunk/cecil/merge/">in the /cecil/merge module of the SVN</a><br/> <br/> Thanks Алексей<b> </b>for this tool!<br/><br/>

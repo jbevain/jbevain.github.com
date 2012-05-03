@@ -1,0 +1,117 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>ca.cs</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	color: #808080;
+	background: #FFFFFF;
+}
+.S4 {
+	color: #007F7F;
+	background: #FFFFFF;
+}
+.S5 {
+	font-weight: bold;
+	color: #00007F;
+	background: #FFFFFF;
+}
+.S6 {
+	color: #7F007F;
+	background: #FFFFFF;
+}
+.S10 {
+	font-weight: bold;
+	color: #000000;
+	background: #FFFFFF;
+}
+span {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S5">using</span><span class="S0"> </span>System<span class="S10">;</span><br />
+<br />
+<span class="S5">namespace</span><span class="S0"> </span>CustomAttributesTest<span class="S0"> </span><span class="S10">{</span><br />
+<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">enum</span><span class="S0"> </span>TristeEnum<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Little<span class="S10">,</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>Lot<br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">class</span><span class="S0"> </span>MethodReturnTypeTestAttribute<span class="S0"> </span><span class="S10">:</span><span class="S0"> </span>Attribute<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">private</span><span class="S0"> </span><span class="S5">string</span><span class="S0"> </span>m_s<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span>MethodReturnTypeTestAttribute<span class="S0"> </span><span class="S10">(</span><span class="S5">string</span><span class="S0"> </span>s<span class="S10">)</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>m_s<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>s<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">class</span><span class="S0"> </span>ParameterTestAttribute<span class="S0"> </span><span class="S10">:</span><span class="S0"> </span>Attribute<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">private</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span><span class="S10">[]</span><span class="S0"> </span>m_t<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span>ParameterTestAttribute<span class="S0"> </span><span class="S10">(</span><span class="S5">int</span><span class="S0"> </span><span class="S10">[]</span><span class="S0"> </span>t<span class="S10">)</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>m_t<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>t<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">class</span><span class="S0"> </span>ComplexTestAttribute<span class="S0"> </span><span class="S10">:</span><span class="S0"> </span>Attribute<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">private</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>m_i<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">private</span><span class="S0"> </span><span class="S5">string</span><span class="S0"> </span>m_s<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">private</span><span class="S0"> </span>TristeEnum<span class="S0"> </span>m_te<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">object</span><span class="S0"> </span>a<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span>Type<span class="S0"> </span>t<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">string</span><span class="S0"> </span>S<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">get</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S5">return</span><span class="S0"> </span>m_s<span class="S10">;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">set</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span>m_s<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">value</span><span class="S10">;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span>TristeEnum<span class="S0"> </span>TE<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">get</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span><span class="S5">return</span><span class="S0"> </span>m_te<span class="S10">;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">set</span><span class="S0"> </span><span class="S10">{</span><span class="S0"> </span>m_te<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">value</span><span class="S10">;</span><span class="S0"> </span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span>ComplexTestAttribute<span class="S0"> </span><span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>i<span class="S10">)</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>m_i<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>i<span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">class</span><span class="S0"> </span>Subject<span class="S0"> </span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span>MethodTestParam<span class="S0"> </span><span class="S10">([</span>ParameterTest<span class="S0"> </span><span class="S10">(</span><span class="S5">new</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span><span class="S10">[]</span><span class="S0"> </span><span class="S10">{</span><span class="S4">1</span><span class="S10">,</span><span class="S0"> </span><span class="S4">2</span><span class="S10">,</span><span class="S0"> </span><span class="S4">3</span><span class="S10">})]</span><span class="S0"> </span><span class="S5">byte</span><span class="S0"> </span>param<span class="S10">,</span><span class="S0"> </span><span class="S5">sbyte</span><span class="S0"> </span>truc<span class="S10">,</span><span class="S0"> </span><span class="S5">object</span><span class="S0"> </span>chose<span class="S10">)</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">[</span><span class="S5">return</span><span class="S10">:</span><span class="S0"> </span>MethodReturnTypeTest<span class="S0"> </span><span class="S10">(</span><span class="S6">"tests"</span><span class="S10">)]</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">int</span><span class="S0"> </span>MethodTestRetType<span class="S0"> </span><span class="S10">()</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">return</span><span class="S0"> </span><span class="S4">12</span><span class="S10">;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">[</span>ComplexTest<span class="S10">(</span><span class="S4">12</span><span class="S10">,</span><span class="S0"> </span>S<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S6">"Hello"</span><span class="S10">,</span><span class="S0"> </span>t<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span><span class="S5">typeof</span><span class="S0"> </span><span class="S10">(</span>Subject<span class="S10">),</span><span class="S0"> </span>TE<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>TristeEnum<span class="S10">.</span>Lot<span class="S10">,</span><span class="S0"> </span>a<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>TristeEnum<span class="S10">.</span>Little<span class="S10">)]</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span>MethodComplex<span class="S0"> </span><span class="S10">()</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">[</span><span class="S5">return</span><span class="S10">:</span><span class="S0"> </span>MethodReturnTypeTest<span class="S0"> </span><span class="S10">(</span><span class="S6">"statictest"</span><span class="S10">)]</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S5">public</span><span class="S0"> </span><span class="S5">static</span><span class="S0"> </span><span class="S5">void</span><span class="S0"> </span>TestRetTypeStatic<span class="S0"> </span><span class="S10">(</span><span class="S5">int</span><span class="S0"> </span>chose<span class="S10">)</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">{</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S0">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="S10">}</span><br />
+<span class="S10">}</span></span>
+</body>
+</html>

@@ -1,0 +1,7 @@
+destination: ./_site
+safe: true
+pygments: true
+server_port: 8888
+baseurl: /
+permalink: /blog/articles/:year/:month/:day/:title
+auto: true

@@ -1,0 +1,48 @@
+---
+layout: post
+title: Cecil.Decompiler
+---
+I know I'm quite late to present what I've been working on during the last <a href="http://idea.opensuse.org/content/">Hack-Week</a> we had at <a href="http://www.novell.com">Novell</a>, but better late than never, right?
+
+Cecil.Decompiler is a library which relies on <a href="http://mono-project.com/Cecil">Cecil</a>, takes one of its method, and give you back an object graph representing the decompiled body of the method, an <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>, depending on the language you target. It also provides you ways to pretty print this AST at your convenience.
+
+It takes its roots in Cecil and is actually a refactoring of the Cecil.FlowAnalysis library that folks at <a href="http://developer.db4o.com/">db4o</a> contributed to the <a href="http://www.mono-project.com/">Mono project</a>.
+
+During the last Hack-Week, I started refactoring Cecil.FlowAnalysis, and since then, I've been working pretty seldom on it. It was last month that I decided to give it a kick, and even took a week of vacations to organize a CodeCamp with friends to give it a boost and have fun altogether.
+
+The next blog post will be the occasion to describe the last week, and to thank my friends for their help.
+
+Let me first warn you. It's still very young, and doesn't support a lot of constructions. On the other hand, it can already do pretty neat stuff, and its architecture makes it easy to use and improve, or add new languages.
+
+The mandatory picture of a little program using the decompiler to decompile itself:
+
+<a href="http://evain.net/public/decompilo_full.png"><img src="http://evain.net/public/decompilo.png" style="border: 1px solid black" /></a>
+
+Don't pay attention to the code as it's full of debug code. Basically only the last two lines are interesting.
+
+The code can be pulled from SVN:
+
+<a href="http://anonsvn.mono-project.com/source/trunk/cecil/decompiler">http://anonsvn.mono-project.com/source/trunk/cecil/decompiler</a>
+
+I guess this will trigger a few interesting questions, so I cooked a little list of questions I already had, and answers I provided.
+
+<blockquote>Q: What it is usable for?</blockquote>
+
+A: It can be very useful for tools that perform static analysis on the assembly. For instance, <a href="http://mono-project.com/Gendarme">Gendarme</a> could use it to detect more complex patterns in your code.
+
+<blockquote>Q: Why would you work on such a project while there's obviously a better known tool that seems to do the same (and which have been working for a long time)?</blockquote>
+
+A: Cecil.Decompiler is Open Source, and licensed under the very liberal MIT/X11. Also it's a library, which makes it easy to use from your own IDE, tool, or whatever project you can think of.
+
+<blockquote>Q: But then what's a good library without a good GUI?</blockquote>
+
+A: I'll write more on that later, but my good friend Sébastien, author of the fantastic Reflexil project, started a Windows Forms GUI on top of it. And from what I understand, he plans to write the core of his tool using in platform agnostic fashion, so that plugins for his GUI could be re-used by a Gtk# GUI for instance.
+
+<blockquote>Q: Why don't you push a binary distribution for now?</blockquote>
+
+A: The project is still very new, and we're changing it a lot. So if someone is interested in having a look at it, he should rather directly pull the sources from SVN regularly.
+
+<blockquote>Q: Should I start filing bugs ?</blockquote>
+
+A: It's not worth it fom now, we're pretty much aware of what's missing and failing.
+

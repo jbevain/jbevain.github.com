@@ -1,0 +1,23 @@
+---
+layout: post
+title: O Manifest resources, where are thou ?
+---
+<br />Hum, what about going back to work ?<br />
+<br />
+I've worked the past day on Manifest Resources for Cecil. Manifest Resources are another tricky thing in the .net framework. System.Reflection.Emit v1.x does not provides methods for embedding them in a fresh new assembly, so mcs have to use some hacks that only work on the Mono runtime. Cecil will be able to emit them, but first, let's try to read them from a raw assembly.<br />
+<br />
+First of all, they are called Manifest Resources, so I would except them to be saved in the assembly manifest. This is what we can find in the second partition of the ECMA CLI standard:<br />
+<br />
+<blockquote>
+The ManifestResource table has the following columns:
+<ul>
+<li>Offset (a 4 byte constant)</li>
+<li>Flags (a 4 byte bitmask of type ManifestResourceAttributes, clause )</li>
+<li>Name (index into the String heap)</li>
+<li>Implementation (index into File table, or AssemblyRef table, or null; more precisely, an Implementation coded index)</li>
+</ul>
+</blockquote>
+<br />
+So if the Implementation metadata token points to a File row, it is a linked resource, if it is null, it is an embedded resource. We can guess that if it points to an AssemblyRef row, it would mean that resource is embedded into another assembly.<br />
+<br />
+My problem is that whatever tool I've used, it seems that manifest resources are defined per module, not per assembly manifest.  I have implemented a per module resource reading system in Cecil, but I don't know how to implement the "AssemblyRef" case. Does someone have any idea about this, or any test case where an implementation token points to an AssemblyRef row ?

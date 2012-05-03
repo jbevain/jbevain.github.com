@@ -1,0 +1,77 @@
+---
+layout: post
+title: The Thing About ExpressionVisitor
+---
+<a href="http://www.flickr.com/photos/jbevain/3068345308/" title="Brouillard by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3034/3068345308_aa2e001dd4.jpg" width="500" height="333" alt="Brouillard" style="border: 2px solid black" /></a>
+
+There was <a href="http://codebetter.com/blogs/jeremy.miller/archive/2008/12/04/i-love-ayende-and-oss.aspx">a discussion</a> recently about why the class <a href="http://msdn.microsoft.com/en-us/library/bb882521.aspx">ExpressionVisitor</a>, which every programmer that developed a LINQ provider or code manipulating .net 3.5 expression trees knows about.
+
+I certainly agree that this class could have been made public, as basically everyone ends up embedding it. Even if it could use a little refactoring to visit lists.
+
+Thing is that I have a naming issue with this class ever since I saw it on <a href="http://blogs.msdn.com/mattwar/archive/2007/07/31/linq-building-an-iqueryable-provider-part-ii.aspx">Matt's blog</a>. To me it does more than just visiting an expression tree. It allows you to transform it. And when I'm facing an expression tree, I often like to sometimes visit it, and at some other times, transform it.
+
+That's basically the reason why I have both a:
+
+<pre>
+class ExpressionVisitor {
+
+    public void Visit (Expression expression)
+    {
+        // ..
+    }
+
+    // ...
+}
+</pre>
+
+And a:
+
+<pre>
+class ExpressionTransformer {
+
+    public Expression Visit (Expression expression)
+    {
+        // ..
+    }
+
+    // ...
+}
+</pre>
+
+Simply because I write a lot of code that would look like:
+
+<pre>
+SomethingExpression VisitSomethingExpression (SomethingExpression expression)
+{
+    if (Foo (expression))
+        return expression;
+
+    if (Bar (expression))
+        return expression;
+
+    Baz (expression);
+    return expression;
+}
+
+</pre>
+
+And it looks a lot better (and is also a tiny bit faster) this way:
+
+<pre>
+
+void VisitSomethingExpression (SomethingExpression expression)
+{
+    if (Foo (expression))
+        return;
+
+    if (Bar (expression))
+        return;
+
+    Baz (expression);
+}
+</pre>
+
+So if they make the current ExpressionVisitor public, having a real non transforming ExpressionVisitor will introduce an interesting naming issue.
+
+I submitted a <a href="http://www.codeplex.com/dlr/WorkItem/View.aspx?WorkItemId=1101">bug to the DLR CodePlex</a>, as the namespace System.Linq.Expressions will come from the DLR in .net 4. What about voting for it?
+

@@ -1,0 +1,16 @@
+---
+layout: post
+title: Mono and the Compact Framework in Love, Part Two
+---
+<br /><p>
+<a href="http://evain.net/blog/index.php/2006/03/31/284-mono-and-the-compact-framework-in-love">Few hours ago</a>, I've discovered that in order to allow assemblies compiled on Mono to run over the Compact Framework, we needed to patch the assemblies so they use the public key of the Compact Framework instead of them of the .net framework.
+</p>
+<p>
+First, I've written a patcher that changes in the raw image the references it founds. This solution was somewhat suboptimal because the .net framework uses two public keys, while the Compact Framework use only one.
+</p>
+<p>
+So I had to write a more complex patcher. This <a href="http://evain.net/public/cf-cecil-patcher.cs.html">new patcher</a> is using Cecil (it requires a fresh SVN Head to compile), and map every known reference it can to its Compact Framework equivalent. It could be further modified to transform the assembly when needed. For instance, the System.Windows.Forms.DataGrid class is hosted in its own assembly on the Compact Framework. This patcher could create the reference when needed and make the DataGrid points to it.
+</p>
+<p>
+Yet, I'm not sure it is worth the big effort to create a good patcher.
+</p>

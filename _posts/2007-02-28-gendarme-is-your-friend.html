@@ -1,0 +1,44 @@
+---
+layout: post
+title: Gendarme is your friend
+---
+Not only <a href="http://www.mono-project.com/Gendarme">Gendarme</a> have a very cool name that a lot of people fail to pronounce correctly, but it is also a very cool tool, very programmer friendly.<br />
+<br />
+<a href="http://pages.infinit.net/ctech/poupou.html">Sébastien</a> did a great job setting up this project. A few days ago, I was cleaning some code helped by <a href="http://www.jetbrains.com/resharper/">Resharper</a>, and noticed a few times that it suggested that "This method can be made static". It's a little optimization that says that if a method doesn't use the this reference within its body, it can then be static. I guess that the native code the JIT will have to generate is then simpler.<br />
+<br />
+How to get such warnings while working on Mono? Here comes Gendarme! It was so easy to write this simple rule that I encourage anyone to give it a try, and to try to write some more funky rules. Let's go back to my example, here is the code that tells if a method can be made static or not:
+<pre>
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+
+using Gendarme.Framework;
+
+namespace Gendarme.Rules.Correctness {
+
+	public class MethodCanBeMadeStaticRule : IMethodRule {
+
+		public MessageCollection CheckMethod (MethodDefinition method, Runner runner)
+		{
+			// we only check non static and non virtual methods
+			if (method.IsStatic || method.IsVirtual)
+				return runner.RuleSuccess;
+
+			// we only check methods with a body
+			if (!method.HasBody)
+				return runner.RuleSuccess;
+
+			// if we find a use of the "this" reference, it's ok
+			foreach (Instruction instr in method.Body.Instructions)
+				if (instr.OpCode == OpCodes.Ldarg_0 ||
+					(instr.OpCode == OpCodes.Ldarg && (int) instr.Operand == 0))
+					return runner.RuleSuccess;
+
+			return runner.RuleFailure;
+		}
+	}
+}
+</pre>
+
+Yeah, simple as that! Isn't that exciting?<br />
+<br />
+Next step, I've now decided to add to my TODO list to integrate Gendarme to MonoDevelop. What could be nicer? 

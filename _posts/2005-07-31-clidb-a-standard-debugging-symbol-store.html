@@ -1,0 +1,31 @@
+---
+layout: post
+title: "CLIDB: a standard debugging symbol store"
+---
+<br /><p>
+El <a href="http://tirania.org/blog">Miguel</a> <a href="http://tirania.org/blog/archive/2005/Jul-28-2.html">blogged</a> about the third revision of the <a href="http://www.ecma-international.org/publications/standards/Ecma-335.htm">ECMA CLI 335 standard</a>.
+</p>
+<p>
+As the author of a library that should be able to emit assemblies compliant to the above standard, I've been happy to see in this document the description of a standardized debugging symbols store, just like Microsoft's PDB, and Mono's MDB. Having, and using, such a standard, would allow users to share debugging infos between differents CLI informations. For instance you're developping an ASP.NET site on Windows in Visual Studio, you compile the whole thing in Debug mode, and then, you deploy your libraries on a Linux server, hosting XSP. If an error occurs in your code, you would be able to see exactly where. Otherwise, the detail level for an error in a Release configuration is the method. Not very easy to find where errors are in this way.
+</p>
+<p>
+So the idea of having a file format standardized is somewhat exciting. Especially for me, since I won't have to write a factory of debugging store emitters...
+</p>
+<p>
+After some discussions and investigations, it appears that the CLIDB format is the kind of symbols store that the SSCLI (aka Rotor) emits. Also I've been said that Microsoft does not plans to implement this standard, because they're happy with their PDB files. Also, if Microsoft's CLR does not understands this format, and .net compilers are not able to emit this kind of store, why would Mono implement this standard, as they already have a file format?
+</p>
+<p>
+Let me recap:
+</p>
+<ul>
+<li>This day, we can't share debugging infos between CLI implementations.</li>
+<li>Mono emits its own, but Open Source MDB format.</li>
+<li>Microsoft's CLR emits Microsoft's PDB files.</li>
+<li>Microsoft is not willing to open the PDB file format, they consider it as an internal feature.</li>
+<li>Microsoft has open the format used by its Open Source implementation of the CLI (the SSCLI): the CLIDB file format.</li>
+<li>The CLIDB file format is now part of the ECMA-335 CLI standard.</li>
+<li>But why would other implementors use this file format instead of their own if the main one does not the same?</li>
+</ul>
+<p>
+If you're just like me willing to be able to use one and only one file format to store debugging symbols, <a href="http://lab.msdn.microsoft.com/ProductFeedback/viewFeedback.aspx?feedbackId=FDBK33728">please let Microsoft know it</a>.
+</p>

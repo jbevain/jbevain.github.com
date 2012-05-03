@@ -1,0 +1,124 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>test.exe.config</title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+.S1 {
+	color: #000080;
+	background: #FFFFFF;
+}
+.S3 {
+	color: #008080;
+	background: #FFFFFF;
+}
+.S6 {
+	color: #7F007F;
+	background: #FFFFFF;
+}
+.S8 {
+	color: #800080;
+	background: #FFFFFF;
+}
+.S11 {
+	color: #000080;
+	background: #FFFFFF;
+}
+.S12 {
+	font-weight: bold;
+	color: #800080;
+	background: #FFFFFF;
+}
+.S13 {
+	font-weight: bold;
+	color: #800080;
+	background: #FFFFFF;
+}
+span {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S12">&lt;?</span><span class="S1">xml</span><span class="S8"> </span><span class="S3">version</span><span class="S8">=</span><span class="S6">"1.0"</span><span class="S8"> </span><span class="S3">encoding</span><span class="S8">=</span><span class="S6">"utf-8"</span><span class="S8"> </span><span class="S13">?&gt;</span><br />
+<span class="S1">&lt;configuration&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;configSections&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;sectionGroup</span><span class="S8"> </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"mono.data"</span><span class="S1">&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;section</span><span class="S8"> </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"providers"</span><span class="S8"> </span><span class="S3">type</span><span class="S8">=</span><span class="S6">"Mono.Data.ProviderSectionHandler,Mono.Data"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;/sectionGroup&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;/configSections&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;appSettings&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;add</span><span class="S8"> </span><span class="S3">key</span><span class="S8">=</span><span class="S6">"PubsConnStr"</span><span class="S8"> </span><span class="S3">value</span><span class="S8">=</span><span class="S6">"factory=System.Data.SqlClient;server=speedy;database=pubs;uid=sa;pwd="</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;/appSettings&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;mono.data&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;providers&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"System.Data.SqlClient"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"System.Data.SqlClient.SqlConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"System.Data.SqlClient.SqlDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"System.Data.SqlClient.SqlCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"Microsoft SQL Server 7.0/2000"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"System.Data.OleDb"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"System.Data.OleDb.OleDbConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"System.Data.OleDb.OleDbDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"System.Data.OleDb.OleDbCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"OLE DB"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"System.Data.Odbc"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"System.Data.Odbc.OdbcConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"System.Data.Odbc.OdbcDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"System.Data.Odbc.OdbcCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"odbc"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"ODBC"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"Mono.Data.TdsClient"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"Mono.Data.TdsClient.TdsConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"Mono.Data.TdsClient.TdsDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"Mono.Data.TdsClient.TdsCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"Mono.Data.TdsClient"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"TDS Generic"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"Mono.Data.MySql"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"Mono.Data.MySql.MySqlConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"Mono.Data.MySql.MySqlDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"Mono.Data.MySql.MySqlCommand"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"Mono.Data.MySql"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"MySQL"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"Mono.Data.PostgreSqlClient"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"Mono.Data.PostgreSqlClient.PgSqlConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"Mono.Data.PostgreSqlClient.PgSqlDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"Mono.Data.PostgreSqlClient.PgSqlCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"Mono.Data.PostgreSqlClient"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"PostgreSQL"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"Mono.Data.SqliteClient"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"Mono.Data.SqliteClient.SqliteConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"Mono.Data.SqliteClient.SqliteDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"Mono.Data.SqliteClient.SqliteCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"Mono.Data.SqliteClient"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"SQL Lite"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;provider</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">name</span><span class="S8">=</span><span class="S6">"Mono.Data.SybaseClient"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">connection</span><span class="S8">=</span><span class="S6">"Mono.Data.SybaseClient.SybaseConnection"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">adapter</span><span class="S8">=</span><span class="S6">"Mono.Data.SybaseClient.SybaseDataAdapter"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">command</span><span class="S8">=</span><span class="S6">"Mono.Data.SybaseClient.SybaseCommand"</span><span class="S8"> </span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">assembly</span><span class="S8">=</span><span class="S6">"Mono.Data.SybaseClient"</span><br />
+<span class="S8">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">description</span><span class="S8">=</span><span class="S6">"Sybase"</span><span class="S8"> </span><span class="S11">/&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S1">&lt;/providers&gt;</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S1">&lt;/mono.data&gt;</span><br />
+<span class="S1">&lt;/configuration&gt;</span><br />
+<span class="S0"></span></span>
+</body>
+</html>

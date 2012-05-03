@@ -1,0 +1,70 @@
+---
+layout: post
+title: Constraining generic constraints
+---
+This is the last part of an update about <a href="http://github.com/jbevain/mono.linq.expressions">Mono.Linq.Expressions</a>, a tiny helper library to complement the System.Linq.Expressions namespace for .net 4 and Mono.
+
+And it's not really about Mono.Linq.Expressions itself. If you're interested about it though, you can read the part about <a href="http://evain.net/blog/articles/2012/01/11/mono-linq-expressions-update">fluently creating expression trees</a>, and the other one about <a href="http://evain.net/blog/articles/2012/01/12/mono-linq-expressions-update-2">combining lambda expressions together</a>.
+ 
+### Proper generic constraints
+<br />
+Have a look at the signature of the factory method Expression.Lambda<T>:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static Expression&lt;TDelegate&gt; Lambda&lt;TDelegate&gt; (
+	Expression body,
+	params ParameterExpression [] parameters) {}
+</pre>
+
+And at the signature of Expression&lt;T&gt;:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public sealed class Expression&lt;T&gt; : LambdaExpression {}
+</pre>
+
+Given the post title, and the &lt;h3&gt; a few lines up there, it's obvious where I'm going: those generic parameters have no constraint. A C# compiler will happily compile:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+class Potato {}
+
+Expression&lt;Potato&gt; e = Expression.Lambda&lt;Potato&gt; (
+	Expression.Constant (new Potato ()));
+</pre>
+
+Of course this won't get you far, but it sure is a heart breaker that because of a little language oddity, you delay to until runtime the problem resolution: this code will throw, Potato sure isn't a Delegate type, and Expression.Lambda, the only way to create an Expression&lt;T&gt; is making sure of that.
+
+So much for type safety, generics!
+
+Another famous issue is the following. Again, for the compiler, it's perfectly legit to write:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+int i;
+if (!Enum.TryParse ("42", out i))
+	Console.WriteLine ("This is so unfair!");
+</pre>
+
+And why is that? Because of the signature of Enum.TryParse:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static bool TryParse&lt;TEnum&gt; (string value, out TEnum result) where TEnum : struct {}
+</pre>
+
+To sum the issue up, C# doesn't allow generic constraints on delegates and enums. And why am I rumbling about this? Because Mono.Linq.Expressions has this method:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static Expression&lt;T&gt; Combine&lt;T&gt; (
+	this Expression&lt;T&gt; self,
+	Func&lt;Expression, Expression&gt; combinator)
+</pre>
+
+And if Expression&lt;T&gt; is not constrained on Delegate, then I sure as hell won't let this stand in my own public API! Which is why the actual signature of the Combine method is:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static Expression&lt;T&gt; Combine&lt;[DelegateConstraint] T&gt; (
+	this Expression&lt;T&gt; self,
+	Func&lt;Expression, Expression&gt; combinator) where T : class
+</pre>
+
+And all of this was just a perfect excuse to write a little <a href="http://github.com/jbevain/cecil">Mono.Cecil</a> based utility tool, appropriately named <a href="https://github.com/jbevain/mono.linq.expressions/blob/master/tools/patch-constraints.cs">patch-constraints</a>, that is used as a post-compile step to fixup the Delegate and Enum constraints of any generic parameter decorated respectively with a DelegateConstraintAttribute or EnumConstraintAttribute, turning them into actual constraints to delegates and enums, which, funnily enough, the C# compiler is more than happy to honor. 
+
+Obviously I could have used the most famous <a href="http://msmvps.com/blogs/jon_skeet/archive/2009/09/10/generic-constraints-for-enums-and-delegates.aspx">Jon Skeet</a>'s <a href="http://code.google.com/p/unconstrained-melody/">unconstrained-melody</a> tool, but 2002 called and it wants its ildasm based, IL text parser back.

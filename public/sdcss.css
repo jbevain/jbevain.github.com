@@ -1,0 +1,54 @@
+div.code
+{
+	background-color: rgb(255,255,255);
+	font-family: "Lucida Console", "courier new", courier;
+	color: rgb(0,0,0);
+	font-size: x-small;
+	padding: 1em;
+	margin: 1em;
+}
+div.code span.span7
+{
+	color: rgb(0, 0, 255);
+	font-weight: normal;
+}
+div.code span.span2
+{
+	color: rgb(0, 128, 0);
+	font-weight: bold;
+}
+div.code span.span9
+{
+	color: rgb(128, 0, 128);
+	font-weight: bold;
+}
+div.code span.span1
+{
+	color: rgb(153, 153, 153);
+	font-weight: normal;
+}
+div.code span.span6
+{
+	color: rgb(25, 25, 112);
+	font-weight: normal;
+}
+div.code span.span8
+{
+	color: rgb(0, 128, 0);
+	font-weight: normal;
+}
+div.code span.span4
+{
+	color: rgb(0, 100, 0);
+	font-weight: normal;
+}
+div.code span.span5
+{
+	color: rgb(0, 0, 255);
+	font-weight: bold;
+}
+div.code span.span3
+{
+	color: rgb(0, 0, 0);
+	font-weight: normal;
+}

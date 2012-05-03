@@ -1,0 +1,72 @@
+---
+layout: post
+title: Link to Link
+---
+Thanks to everyone who asked, I'm not dead. Well, not yet.
+
+This year, I'm again involved in Google's Summer of Code, working for the Mono project on the CIL Linker. A CIL Linker? What's that? According to this <a href="http://www.mono-project.com/Summer2006">page</a>, here is a definition:
+
+<blockquote>
+The idea is to create a "linker" for assemblies in Mono. The goal is to only ship the minimal possible set of functions that a set of programs might require to run as opposed to the full libraries.
+</blockquote>
+
+So this "linker" is now working, more or less. You can find the code in the module <a href="http://mono.myrealbox.com/source/trunk/cecil/linker/">/cecil/linker</a> of <a href="http://mono.myrealbox.com/source/trunk/">Mono's SVN</a>.
+
+If ever you want to try to compile it from the sources, you'll have to checkout the lib module also, as it contains the library <a href="http://mono-project.com/Cecil">Cecil</a> that I use to manipulate the assemblies that have to be linked.
+
+Let me show you what it can do. Let's link the linker!
+
+<pre>
+porte:/tmp/linker jbevain$ ls -l
+total 856
+-rwxr-xr-x   1 jbevain  jbevain  395776 Aug 21 13:03 Mono.Cecil.dll
+-rwxr-xr-x   1 jbevain  jbevain   38912 Aug 21 13:03 linker.exe
+porte:/tmp/linker jbevain$ mono linker.exe 
+Mono CIL Linker
+linker [options] -x|-a file
+   --about     About the Mono CIL Linker
+   --version   Print the version number of the Mono CIL Linker
+   -out        Specify the output directory, default to .
+   -p          Preserve the core libraries, true or false, default to true
+   -x          Link from an XML descriptor
+   -a          Link from an assembly
+
+   you have to choose one from -x and -a but not both
+porte:/tmp/linker jbevain$ mono linker.exe -out linker_only -a linker.exe 
+porte:/tmp/linker jbevain$ ls -l linker_only/
+total 8232
+-rw-r--r--   1 jbevain  wheel   364032 Aug 21 13:12 Mono.Cecil.dll
+-rwxr-xr-x   1 jbevain  wheel  1068544 Aug 21 13:12 System.Xml.dll
+-rwxr-xr-x   1 jbevain  wheel   760320 Aug 21 13:12 System.dll
+-rwxr-xr-x   1 jbevain  wheel    38912 Aug 21 13:12 linker.exe
+-rwxr-xr-x   1 jbevain  wheel  1975296 Aug 21 13:12 mscorlib.dll
+</pre>
+
+So, what happened here is that the linker linked itself, plus third parties libraries, but without touching to the core. This could be useful to reduce the size of an application. But another goal of the linker is to create the really minimal set of assemblies in used. So let's link the core also!
+
+<pre>
+porte:/tmp/linker jbevain$ mono linker.exe -out linker_core -a linker.exe -p false
+porte:/tmp/linker jbevain$ ls -l linker_core/
+total 4792
+-rw-r--r--   1 jbevain  wheel   364032 Aug 21 13:15 Mono.Cecil.dll
+-rw-r--r--   1 jbevain  wheel   552448 Aug 21 13:15 System.Xml.dll
+-rw-r--r--   1 jbevain  wheel   117248 Aug 21 13:15 System.dll
+-rwxr-xr-x   1 jbevain  wheel    38912 Aug 21 13:15 linker.exe
+-rw-r--r--   1 jbevain  wheel  1372672 Aug 21 13:15 mscorlib.dll
+</pre>
+
+Et voil√ , the core has been linked as well. Watch the size of the assemblies! Now what about using this linked linker! I'll keep it simple for the moment, let's link a simple hello world using this new linker:
+
+<pre>
+porte:/tmp/linker/linker_core jbevain$ export MONO_PATH="/tmp/linker/linker_core/"
+porte:/tmp/linker/linker_core jbevain$ mono linker.exe -out hello -a hello.exe
+porte:/tmp/linker/linker_core jbevain$ cd hello
+porte:/tmp/linker/linker_core jbevain$ export MONO_PATH="/tmp/linker/linker_core/hello"
+porte:/tmp/linker/linker_core/hello jbevain$ ls
+hello.exe       mscorlib.dll
+porte:/tmp/linker/linker_core/hello jbevain$ mono hello.exe 
+Hello World!
+</pre>
+
+Pretty cool huh? I ever you want to give it a try and link the core, you have to know that you're going to face some bugs, due to the fact that I modify the corlib. But heh, that's a good start for the linker isn't it?
+

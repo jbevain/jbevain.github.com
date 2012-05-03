@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+exit if ARGV.length == 0
+
+recurse = ARGV[0] == "-r"
+
+path = ARGV.length == 1 ? ARGV[0] : ARGV[1]
+
+def exclude?(file)
+
+	return true if File.directory?(file)
+
+	[".dll", ".exe", ".pdb", ".mdb"].each { |ext|
+		return true if file[-ext.length, ext.length] == ext
+	}
+
+	return true if file.include?(".svn")
+
+	return false
+end
+
+def clean(file)
+	buffer = ""
+	File.open(file, File::RDONLY) { |f|
+		buffer = f.readlines().join()
+		buffer.gsub!(/\r\n/, "\n")
+		buffer.gsub!(/(\t)+\n/, "\n")
+		buffer.gsub!(/( )+\n/, "\n")
+	}
+	write = false
+	File.open(file, File::RDONLY) { |f|
+		original = f.read()
+		write = original != buffer
+	}
+	if (write)
+		File.open(file, File::WRONLY | File::TRUNC) { |f|
+			f.write(buffer)
+		}
+		puts("#{file} cleaned")
+	end
+end
+
+ARGV.each { |f|
+	Dir[f].each { |file|
+		clean(file) if not exclude?(file)
+	}
+}

@@ -1,0 +1,54 @@
+---
+layout: post
+title: Mono.Linq.Expressions update 2
+---
+This is the second part of an update about <a href="http://github.com/jbevain/mono.linq.expressions">Mono.Linq.Expressions</a>, a tiny helper library to complement the System.Linq.Expressions namespace for .net 4 and Mono.
+
+The first part is about <a href="http://evain.net/blog/articles/2012/01/11/mono-linq-expressions-update">fluent creation of expression trees</a>.
+
+### Combining expression trees together
+<br />
+I keep reading questions on <a href="http://stackoverflow.com">StackOverflow</a> about this. How to combine two lambda expression together? If we have:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+Expression&lt;Func&lt;User, bool&gt;&gt; isUserOver18 = u =&gt; u.Age &gt;= 18;
+Expression&lt;Func&lt;User, bool&gt;&gt; isFemaleUser = u =&gt; u.Gender == Gender.Female;
+</pre>
+
+If we want to combine this lambda expression with a “and” logical expression, the natural way would be to write:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+Expression&lt;Func&lt;User, bool&gt;&gt; isFemaleUserOver18 = u =&gt;
+	isUserOver18(u) && isFemaleUser(u);
+</pre>
+
+This works just fine if you compile the expression into a delegate to actually execute this code. But most of the time questions of StackOverflow are about using the resulting lambda expression to create a query for LINQ to a database provider, which will analyze the expression tree and create an according SQL request.
+
+By combining expression trees this way, the LINQ provider may or may not be unable to turn the two invocations into actual SQL.
+
+That's one of the reason I wrote about an updated <a href="http://evain.net/blog/articles/2010/07/20/predicatebuilder-revisited">PredicateBuilder</a>. The obvious solution is to inline the two combined representation of lambda expressions into a new lambda expression tree. 
+
+The update of <a href="http://github.com/jbevain/mono.linq.expressions">Mono.Linq.Expressions</a> comes with a new type, <a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/CombineExtensions.cs">CombineExtensions</a>, which exposes extension methods that you can use to combine fully created (into lambda expressions) expression trees.
+
+Using those, combining the two expression trees is as simple as:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+Expression&lt;Func&lt;User, bool&gt;&gt; isFemaleUserOver18 = isUserOver18.Combine(
+	isFemaleUser,
+	(left, right) =&gt; left.AndAlso(right));
+</pre>
+
+And indeed, if you print the code representation of this expression tree, you'll have both lambda bodies inlined into another one:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+user =&gt; user.Age &gt;= 18 && user.Gender == Gender.Female
+</pre> 
+
+Or if you want to negate the boolean expression:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+Expression&lt;Func&lt;User, bool&gt;&gt; isNotFemaleUserOver18 = isFemaleUserOver18.Combine(
+	e =&gt; e.Not());
+</pre>
+
+The cool thing about those Combine extension methods is that they're completely generic, they don't work only on simple predicates. For instance, you can use those to chain constructions of mathematical expressions.

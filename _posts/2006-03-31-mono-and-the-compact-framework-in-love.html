@@ -1,0 +1,22 @@
+---
+layout: post
+title: Mono and the Compact Framework in Love
+---
+<br /><p>
+Few persons expressed their interest on the mono-devel mailing list about the ability to run assemblies compiled using the Mono runtime over the Compact Framework. Those who tried to run such an assembly know that the program does not start. 
+</p>
+<p>
+I decided to have a look at it tonight. First I thought that Windows CE's PELoader failed to load assemblies emitted by Mono because the order of a few things inside the .text section of the PE executable where different. Then it appears that the PE file was not the problem. The problem comes from the fact that the public keys used by the .net framework (and thus Mono) to sign the core libraries are different from the ones used for the Compact Framework.
+</p>
+<p>
+To validate this assumption, I've manually modified the public key tokens of a simple windows forms assembly using an hex editor, and I've run it over the Compact Framework inside VS.NET 2003's emulator. And it worked nicely :)
+</p>
+<p>
+For those who are not willing to make those changes by hand, compilation after compilation, I've written a simple assembly patcher that you can find here: <a href="http://evain.net/public/cf-patcher.cs.html">Mono Assembly to Compact Framework</a>.
+</p>
+<p>
+The only side effect of this hack is that Mono will let you compile things using methods that are not included in the Compact Framework, so take care, and have a look at the MSDN to see what you can use.
+</p>
+<p>
+<b>Update</b>: this is deprecated in favor of <a href="http://evain.net/blog/index.php/2006/03/31/285-mono-and-the-compact-framework-in-love-part-two">a new version of the patcher</a>. 
+</p>

@@ -1,0 +1,44 @@
+---
+layout: post
+title: Beautiful Morning.
+---
+<br /><pre>
+newton:~/Sources/temp jbevain$ monodis dummy.dll 
+.assembly 'dummy'
+{
+  .hash algorithm 0x00000000
+  .ver  0:0:0:0
+}
+
+.module Dummy // GUID = {1764306C-0167-41BE-86B8-52ED3980F771}
+</pre>
+<p>
+Pretty simple assembly huh? Well, I've never been as happy to see the output of monodis. After three days of hard work, it is what Cecil produced while running this code:
+</p>
+<pre class="csharpcode">
+<span class="kwrd">using</span> System;
+
+<span class="kwrd">using</span> Mono.Cecil;
+
+<span class="kwrd">public</span> <span class="kwrd">class</span> EntryPoint {
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        Console.WriteLine (<span class="str">"Running ..."</span>);
+        WriteDummyAssembly ();
+        Console.WriteLine (<span class="str">"... Ended"</span>);
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">void</span> WriteDummyAssembly ()
+    {
+        IAssemblyDefinition asm = AssemblyFactory.DefineAssembly (
+            <span class="str">"dummy"</span>, <span class="str">"Dummy"</span>, TargetRuntime.NET_1_1);
+        AssemblyFactory.SaveAssembly (asm, <span class="str">"dummy.dll"</span>, AssemblyKind.Dll);
+    }
+}</pre>
+<p>
+This does not looks very complicated but believe me, writing PE binary are neither simple nor fun. The good news is that both Mono and Cecil are able to read this assembly. I mean, Cecil can read assemblies it has produced, wow, isn't there some kind of beauty here ? The bad news is that Microsoft's Framework still throws me an error, but heh!
+</p>
+<p>
+Ok ok, stop blogging, go back to work.
+</p>

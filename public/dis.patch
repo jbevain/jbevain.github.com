@@ -1,0 +1,82 @@
+Index: ChangeLog
+===================================================================
+--- ChangeLog	(revision 47976)
++++ ChangeLog	(working copy)
+@@ -1,3 +1,8 @@
++2005-08-03  Jb Evain  <jbevain@gmail.com>
++
++	* get.c (dis_stringify_method_signature): handle case when a parameter
++	  defined in the method signature has no corresponding Param row.
++
+ 2005-08-03  Ankit Jain <jankit@novell.com>
+ 
+ 	* main.c (call_conv_map): Oops. Add a sentinel entry (-1, NULL).
+Index: get.c
+===================================================================
+--- get.c	(revision 47976)
++++ get.c	(working copy)
+@@ -727,6 +727,7 @@
+ 	guint32 cols [MONO_METHOD_SIZE];
+ 	guint32 pcols [MONO_PARAM_SIZE];
+ 	guint32 param_index = 0, next_param_index = 0;
++	gboolean has_param_row;
+ 	const char *name = "", *method_name = "";
+ 	int free_method = 0;
+ 	char *retval, *esname;
+@@ -771,20 +772,29 @@
+ 		}
+ 	} 
+ 
+-	for (i = 0; i < method->param_count + 1; ++i) {
++	for (i = 0; i < method->param_count; i++) {
+ 		marshal_info = NULL;
+ 		name = "";
++		has_param_row = param_index && param_index < next_param_index;
+ 
+-		if (method->param_count == 0 && ! (param_index && param_index < next_param_index))
++		if (method->param_count == 0 && !has_param_row)
+ 			/* method has zero parameters, and no row for return val in the PARAM table */
+ 			continue;
+-		
+-		mono_metadata_decode_row (&m->tables [MONO_TABLE_PARAM], param_index - 1, pcols, MONO_PARAM_SIZE);
+-		
+-		if (i == pcols [MONO_PARAM_SEQUENCE]) {
+-			if (i)
+-				name = mono_metadata_string_heap (m, pcols [MONO_PARAM_NAME]);
+ 
++		if (has_param_row)
++			mono_metadata_decode_row (&m->tables [MONO_TABLE_PARAM], param_index - 1, pcols, MONO_PARAM_SIZE);
++
++		if (!i && has_param_row && i == pcols [MONO_PARAM_SEQUENCE]) {
++			/* return type parameter: skip it! */
++			param_index++;
++			mono_metadata_decode_row (&m->tables [MONO_TABLE_PARAM], param_index - 1, pcols, MONO_PARAM_SIZE);
++		}
++
++		if (!has_param_row)
++			name = g_strdup_printf ("A_%i", i + 1);
++		else {
++			name = mono_metadata_string_heap (m, pcols [MONO_PARAM_NAME]);
++
+ 			if (pcols [MONO_PARAM_FLAGS] & PARAM_ATTRIBUTE_HAS_FIELD_MARSHAL) {
+ 				const char *tp;
+ 				MonoMarshalSpec *spec;
+@@ -797,16 +807,13 @@
+ 				else
+ 					ret_marshal_info = dis_stringify_marshal_spec (spec);
+ 			}
+-			param_index ++;
+ 		}
+ 
+-		if (!i)
+-			continue;
+-
++		param_index++;
+ 		if (i > 1)
+ 			g_string_append (result, ", ");
+ 
+-		retval = dis_stringify_param (m, method->params [i - 1]);
++		retval = dis_stringify_param (m, method->params [i]);
+ 
+ 		esname = get_escaped_name (name);
+ 		g_string_append_printf (result, "%s%s %s", retval, marshal_info ? marshal_info : "", esname);

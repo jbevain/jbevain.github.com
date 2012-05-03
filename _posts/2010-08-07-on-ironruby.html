@@ -1,0 +1,33 @@
+---
+layout: post
+title: On IronRuby
+---
+<a href="http://www.flickr.com/photos/jbevain/271257315/" title="Where shall we go? by Jb Evain, on Flickr"><img style="border: 2px solid black" src="http://farm1.static.flickr.com/107/271257315_71f39c293a.jpg" width="500" height="333" alt="Where shall we go?" /></a>
+
+Just as everyone, I learned yesterday via <a href="http://blog.jimmy.schementi.com/2010/08/start-spreading-news-future-of-jimmy.html">Jimmy</a> the near death experience that IronRuby is undergoing. And spent some time thinking about it.
+
+For those of you who will stumble upon this and don’t follow this blog regularly, let me add a pinch of background. I implemented the .net 3.5 version of System.Linq.Expressions in Mono, I signed the IronRuby contributor agreement on day one, and regularly made sure it runs fine on Mono along with the DLR and IronPython. In the process of doing so, I contributed fixes and improvements to IronRuby. If I’m far for being the largest external contributor, at least I have a clue about how contributing to IronRuby works. And doesn’t work.
+
+Also I spent the last two weeks working on making the IronRuby 1.1 test suite pass on Mono. Which may be the biggest reason I feel like I have something to say, as it involved countless hours of diving into the IronRuby code to extract simple test cases.
+
+But now to the point. The IronRuby team currently consists of one hacker. We don’t know much about the IronPython team. And everyone who wanted to work on .net with their favorite dynamic language is freaking out. To a reason.
+
+The good news is that the code of IronPython, IronRuby and the DLR is open source, and has recently been re-licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0.html">Apache2 license</a>. The official message is that IronRuby’s fate is now in the hands of the community.
+
+That doesn’t sound like a bright future. So far, the community has been excluded from the development process of IronRuby. It’s impossible to contribute code to the core compiler of IronRuby, let alone to the DLR which is now part of .net 4.0. The code in github is a mere mirror of an internal TFS repository, and may or may not be up to date. And until IronRuby’s divorce with Microsoft is completely consumed, it will stay like this. So, sure we can contribute to external libraries, but that’s definitely not where the fun lies, and from now on, nor where the real work will be required.
+
+So is the solution a fork?
+
+It’s indeed a possibility. But for knowing first hand, IronRuby’s code source is far from being a simple piece of code to comprehend and to hack on. So what will happen in a couple of months when the buzz will have settled? Who will be able to take over the development of IronRuby? I for one am interested in helping, but I have already a lot on my plate. With Microsoft excluding the community from the core development process from day one, there’s no real knowledge of the insides of IronRuby outside of Microsoft, yet.
+
+If Microsoft employees keep working on IronRuby occasionally, and keep the current setup, the community will still be excluded, and no one outside will contribute, besides Jimmy. IronRuby will simply fall into oblivion.
+
+Yet I think that until Microsoft completely stops funding any work on IronRuby, they will be the only one really able to make something out of it. As Jimmy suggested, letting Microsoft know that there’s an important demand for IronRuby and IronPython, is probably the best course of action. Who knows, there’s maybe still time for Microsoft to correct its course. Special bonus points if we can get Microsoft to not only accept that there’s a demand for IronRuby, but also for accepting external contributions as it would make them move forward faster.
+
+What about <a href="http://tekpub.wufoo.com/forms/beg-for-the-mono-team-to-guide-ironruby-project/">this petition</a> (deleted since) to ask the Mono developers to take over IronRuby?
+
+Actually that’s maybe what I’ve found the most tragic, and one of the reasons that triggered this post. It’s a bit along the line of “we don’t quite want to work on it, but we definitely want to have it, so let’s ask for someone else to steer the project”. If I can’t talk for my boss Miguel, I can say that we already have a lot on our plate, and that I don’t see us taking over IronRuby. I of course will continue to make sure it runs fine on Mono. But really, if the community wants IronRuby, it will have to do something about it itself. Either by contributing code or begging Microsoft.
+
+A possibility of course would be for Microsoft to enter a development agreement with the Mono team as they did for Silverlight and Moonlight, and I’ll gladly volunteer to join the effort, but I don’t see that happening.
+
+As a conclusion, and on a personal note, I find the situation extremely disappointing. In my opinion, Microsoft is making a strategic mistake. The Iron* projects were somehow the fun and hip face of the .net development (outside of Mono, of course). They had a true potential to attract developers that would traditionally stay away from Microsoft and .net.

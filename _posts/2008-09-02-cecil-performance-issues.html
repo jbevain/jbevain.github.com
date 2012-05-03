@@ -1,0 +1,29 @@
+---
+layout: post
+title: Cecil performance issues
+---
+<a href="http://www.flickr.com/photos/jbevain/2496833680/" title="Then it showed up by Jb Evain, on Flickr"><img src="http://farm3.static.flickr.com/2032/2496833680_7d3b8086f5.jpg" width="500" height="333" alt="Then it showed up" style="border: 2px solid black" /></a>
+
+At the beginning, <a href="http://mono-project.com/Cecil">Cecil</a> was written to be an assembly manipulation library. The initial goal was to be able to read assemblies without loading them in an AppDomain, and also, to expose more that what .net 1.1 provided.
+
+I implemented the writing parts of Cecil during my first Summer of Code, and barely touched it after, at it turns out it was working.
+
+But this summer, two great hackers, <a href="http://weblog.ikvm.net/">Jeroen, author or IKVM</a>, and <a href="http://rolfkvinge.blogspot.com">Rolf</a>, our <a href="http://www.mono-project.com/Language_BASIC">VB 8 compiler</a> author, decided that they gave enough blood and sweat to work around System.Reflection.Emit issues, and prototyped a version of their project based on Cecil instead.
+
+If Rolf decided to go the full Cecil way, and replaced the usage of System.Reflection and System.Reflection.Emit (his <a href="http://anonsvn.mono-project.com/source/branches/rolf/cecil-vbnc/">branch is available</a>), Jeroen decided to write a layer on top of Cecil that mimics the System.Reflection.Emit API.
+
+Both wrote a sum-up about their findings, <a href="http://weblog.ikvm.net/CommentView.aspx?guid=afda88af-e2cf-47d6-917b-5f3134b681c1">here for Jeroen</a>, and <a href="http://rolfkvinge.blogspot.com/2008/08/cecil-reloaded.html">there for Rolf</a>. And both came to the conclusion that Cecil performs a lot less well that System.Reflection.Emit, both in terms of speed and memory consumption.
+
+Rolf also uses the <a href="http://anonsvn.mono-project.com/source/branches/cecil-delayed-loading/">delay loading branch</a> of Cecil, created by <a href="http://dev.mainsoft.com/">Mainsoft</a> for their CIL to Java bytecode translator.
+
+So the point is that Cecil uses too much memory, and is not fast enough in those scenarios, while it performs better in the reading only or reading + manipulating.
+
+The good news is that, thanks to those hackers, we have now two amazing test cases to work on and to optimize. I've also started a few weeks ago, as a night hack, a refactoring of Cecil, that removes the intermediate structures that the current version of Cecil uses to read and write assemblies. If that makes reading and writing a little bit more complicated, it should also save a lot of memory.
+
+And who knows, maybe one day, when Cecil will be optimized properly, and that the SRE on top of Cecil layer will be sufficient, it will require only a couple of changes to base mcs on Cecil.
+
+Anyway, kudos to those hackers, let see what I can do to catch up.
+
+<i>We'll let you know!</i>
+
+

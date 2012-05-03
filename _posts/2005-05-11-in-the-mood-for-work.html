@@ -1,0 +1,42 @@
+---
+layout: post
+title: In the mood for work
+---
+<br /><h3>Cecil's timeline</h3>
+<p align="center">
+ <img src="http://evain.net/public/cecil_timeline.png" />
+</p>
+<b>Cecil 1.0:</b>
+<ul>
+ <li>Lazy and Aggressive loading of assemblies</li>
+ <li>Both Reflection and Metadata level available</li>
+ <li>.net 1.1 profile support</li>
+ <li>Assembly round-triping</li>
+ <li>modreq/modopt, pinned types, resource embedding, ...</li>
+ <li>bugs</li>
+</ul>
+<b>Cecil 1.2:</b>
+<ul>
+ <li>.net 2.0 profile support</li>
+ <li>Emit mdb debugging symbols (maybe pdb too)</li>
+ <li>bugs correction I guess</li>
+ <li>another few bugs</li>
+</ul>
+<p>
+ I've found something interesting. In SRE, you are able to emit assemblies in memory, then use them directly. I was afraid that with Cecil I had to write the assemblies on the disk before loading them, but it seems that I won't have to, since there is a Assembly::Load(byte[]) method that should be usable. But i don't think that it will be a very used feature, because in SRE2, you have almost everything you want to emit at runtime what you need.
+</p>
+<h3>Paris</h3>
+<p>
+ The good thing when someone come to visit you, it's that you go to places your not used to, even in the city you're living in. So i've spend the last few days visiting Paris, and I have to admit that I love this city (expected the subway). Some pics taken in the <a href="http://www.mnhn.fr/">"Museum d'histoire naturelle"</a>.
+</p>
+<p align="center">
+<a href="http://evain.net/pics/galerie.jpg">
+<img src="http://evain.net/pics/galerie_thumb.jpg" border="0" />
+The gallery
+</a>
+<br />
+<a href="http://evain.net/pics/baleine.jpg">
+<img src="http://evain.net/pics/baleine_thumb.jpg" border="0" />
+A whale
+</a>
+</p>

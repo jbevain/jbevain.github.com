@@ -1,0 +1,64 @@
+---
+layout: post
+title: Cecil is slang for cocaine
+---
+<br /><blockquote>
+Everybody's round tripping,
+'tripping assemblies
+</blockquote>
+<p>
+Some very exciting progress have been made today. Let me explain in what I've spend the lasts minutes:
+</p>
+<ul>
+<li>I have compiled Cecil HEAD normally, this produces a Mono.Cecil.dll file.</li>
+<li>
+I have compiled this little piece of code referencing the previous assembly:
+</li>
+</ul>
+<pre class="csharpcode">
+<span class="kwrd">using</span> System;
+
+<span class="kwrd">using</span> Mono.Cecil;
+
+<span class="kwrd">class</span> Test {
+
+    <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        RoundTripCecil ();
+    }
+
+    <span class="kwrd">static</span> <span class="kwrd">void</span> RoundTripCecil ()
+    {
+        Console.WriteLine (<span class="str">"Round Trip Cecil"</span>);
+        IAssemblyDefinition asm = AssemblyFactory.GetAssembly (
+            <span class="str">"Mono.Cecil.dll"</span>);
+
+        Console.WriteLine (<span class="str">"Cecil is loaded"</span>);
+
+        AssemblyFactory.SaveAssembly (asm, <span class="str">"Mono.Cecil.dll"</span>, AssemblyKind.Dll);
+
+        Console.WriteLine (<span class="str">"Cecil is written back"</span>);
+    }
+}
+</pre>
+<ul>
+<li>I've runned it, the result is a fresh new round tripped Mono.Cecil.dll</li>
+<li>I've modified the previous code to round trip mcs, our C# compiler (if you still follow me, we are here using a round tripped Cecil to round trip mcs)</li>
+<li>I've re-compiled Cecil using the fresh new mcs</li>
+<li>And the new Cecil is perfectly working, wow.</li>
+</ul>
+<p>
+The conclusion of all of that is that the writing layer of Cecil is more and more mature and stable. Few things are missing, especially multiple modules assemblies, but who uses that, and complex custom attributes, using arrays, or properties and fields.
+</p>
+<p>
+Also the new API is in the SVN, it is now much easier for users to modify and create assemblies. Previous code samples on this blog are now deprecated, maybe I should remove them. Or update them. I will see. If you are already using Cecil, you fool, you may encounter one or two little API break with SVN head. The first that comes to my mind is the method of the AssemblyFactory to get an assembly, wich used to take a string and an LoadingType enumeration. This enumeration does not exists anymore, as I decided to get rid of two different engines to load assemblies. The LazyLoading was introducing a lot of complexity, so for the sake of simplicity, I've removed it.
+</p>
+<p>
+Few things are still not implemented in the modifying layer, but I prefer focusing on the writing one before the end of Google's Summer of Code. Some times after the end of the SoC, I will release the first public version of Cecil. Wich means API freeze, bugs reports, blah.
+</p>
+<p>
+Sadly, Cecil itself can't be use to make some nice screen shot. I had to find other ways:
+</p>
+<p align="center">
+<a href="http://www.google.com/search?hl=en&q=define%3Acecil"><img border="0" src="http://evain.net/public/define_cecil.png" /></a>
+</p>

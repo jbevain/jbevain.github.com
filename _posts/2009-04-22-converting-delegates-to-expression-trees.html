@@ -1,0 +1,33 @@
+---
+layout: post
+title: Converting Delegates to Expression Trees
+---
+<a href="http://www.flickr.com/photos/jbevain/3466496686/" title="Plage du diamant by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3621/3466496686_90e55ed199.jpg" width="500" height="333" alt="Plage du diamant" style="border: 2px solid black" /></a>
+
+Back when I was working at <a href="http://developer.db4o.com/">db4o</a>, we had fun implementing a <a href="http://developer.db4o.com/Resources/view.aspx/Reference/Object_Lifecycle/Querying/Native_Queries">mechanism</a> somehow similar to LINQ, to have strongly typed queries expressed using code itself. The implementation uses <a href="http://www.mono-project.com/Cecil">Mono.Cecil</a> and Cecil.FlowAnalysis to decompile a delegate into an AST, that db4o's query optimizer can process.
+
+Since .net 3.5, an API, System.Linq.Expressions, can be used to get a representation of a C# lambda expression into an object graph. An expression tree. .net 4.0 will add support for statements to this API, but as far as I know, the language itself hasn't been updated to produce those new nodes.
+
+Anyway, a few days ago, someone on <a href="http://stackoverflow.com/">Stack Overflow</a>, asked <a href="http://stackoverflow.com/questions/767733/converting-a-net-funct-to-a-net-expressionfunct">how to turn a delegate into a LINQ expression tree</a>. There's no builtin feature to do that, it's not a straightforward process. You basically have to decompile the compiled method. I guess it's a good thing that I'm working on <a href="http://evain.net/blog/articles/2008/12/15/cecil-decompiler">a decompiler</a>, if I need to decompile something.
+
+Tonight I wrote a short spike to verify the feasibility of my idea, and it turns out to be pretty simple. Sample:
+
+<pre>
+static void Main ()
+{
+	Func<int, int> magic = i => i * 42;
+
+	Expression<Func<int, int>> expression =
+		DelegateConverter.ToExpression (magic);
+
+	Console.WriteLine (expression.ToString ());
+	// prints: i => i * 42
+	Console.WriteLine (expression.Compile ().Invoke (1));
+	// prints: 42
+}
+</pre>
+
+DelegateConverter is implemented as a simple visitor which walks over a Cecil.Decompiler AST, and generates, if possible, the according Linq Expression Tree. Pretty cool isn't it?
+
+You can browse <a href="http://anonsvn.mono-project.com/viewvc/trunk/cecil/decompiler/dbg/Linq.cs?content-type=text%2Fplain&view=co">the code of the spike</a>. Keep in mind that it's nowhere to be complete, and that it's just a proof of concept. Still, I think it's a pretty cool usage of the Cecil.Decompiler library.
+

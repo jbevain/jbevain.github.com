@@ -1,0 +1,63 @@
+---
+layout: post
+title: .net 4, C# 4, and the DLR
+---
+<a href="http://www.flickr.com/photos/jbevain/453037066/" title="On the road again by Jb Evain, on Flickr"><img src="http://farm1.static.flickr.com/170/453037066_16cc80df54.jpg" width="500" height="333" style="border: 2px solid black" alt="On the road again" /></a>
+
+<b>UPDATE</b>: turns out that there's some true in those previsions, a small <a href="http://evain.net/blog/articles/2008/07/31/system-scripting">follow up</a>.
+
+I've been thinking a bit about the discussion in <a href="http://channel9.msdn.com/posts/Charles/C-40-Meet-the-Design-Team/">this video</a>, about the future of C#, and specifically about its next version. If nothing is said clearly and loudly, as they're most probably waiting for the PDC, you can still get a glimpse of what C# 4 and .net 4 will get as new features.
+
+I'm mostly interested in one aspect of those new features. It's the possible integration of the <a href="http://en.wikipedia.org/wiki/Dynamic_Language_Runtime">DLR</a> inside the framework, and in the C# language.
+
+The DLR, as we used to have it in <a href="http://www.codeplex.com/IronPython">IronPython</a>, has been split into two separate assemblies, Microsoft.Scripting, and Microsoft.Scripting.Core a few months ago.
+
+Microsoft.Scripting.Core is probably the part that will make it into the framework. It's the part that contains a generalist <a href="http://en.wikipedia.org/wiki/Abstract_syntax_tree">AST</a>, a compiler for this AST, using both <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.dynamicmethod.aspx">LCG</a> and traditional <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.aspx">SRE</a> for the debug scenarios. It also comes with a fast dynamic call site implementation, and an hosting API. So are we going to have a new System.Scripting assembly?
+
+An interesting change in the DLR, is the naming of the AST factory and nodes. I've spent the last months working on <a href="http://msdn.microsoft.com/en-us/vbasic/aa904594.aspx">LINQ</a> and the <a href="http://msdn.microsoft.com/en-us/library/bb345362.aspx">LINQ compiler</a> in <a href="http://mono-project.com">Mono</a>, and comparing the LINQ expression AST with the DLR AST is an interesting thing to do.
+
+The DLR AST is now basically the LINQ expression AST, with statements added. And it looks like the current DLR AST has been tinkered around what has been already shipped inside .net 3.5 in the namespace System.Linq.Expressions.
+
+Here's a small example. In System.Linq.Expressions, pretty much all node from the AST extends the type Expression. Each Expression has a NodeType property, of type ExpressionType.
+
+And you can find the same thing now in the DLR, but with some stuff added.
+
+<pre>
+public enum ExpressionType {
+    // some traditional expressions
+
+    Add,
+    AddChecked,
+
+    // ...
+    Call,
+
+    // ...
+
+    IfStatement,
+    SwitchStatement,   
+
+    // ...
+}
+</pre>
+
+So for the DLR, a statement is an expression. It makes kind of sense for a dynamic language you'll tell me, but it looks a bit weird to be implemented this way.
+
+Anyway, C# 3 already has a way to create expression trees to support some basic meta programming features, I guess we can only wonder if C# 4 will extend the meta programming features to support not only expressions but also statements, using the DLR tree.
+
+I have no idea how they'll deal with the fact that the existing stuff is in System.Linq.Expressions. Are they going to obsolete the whole namespace, and redirect everything to a possible System.Scripting.Ast (sounds less likely)? Are they moving the DLR AST to System.Linq.Expressions (sounds more likely)? Who knows? Not me (I've never lost control).
+
+Interesting speculations anyway :)
+
+So for now, the only change I can foresee for C# 4, is that you'll be able to get full code blocks instead of only expressions when asking for an Expression of T.
+
+But here's another interesting one we can have a <a href="http://blogs.msdn.com/charlie/archive/2008/01/25/future-focus.aspx">glimpse here</a>, is duck typing support based the DLR.
+
+At the language level, it's difficult to say if they're going to rely
+
+* on a dynamic code block, like the example shows in this blog entry,
+* on a custom marker type,
+* on another syntax for message passing to dynamic objects,
+
+
+All in all, it looks like C# 4 will have some nifty stuff, let's wait for the PDC.

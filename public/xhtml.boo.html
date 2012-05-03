@@ -1,0 +1,117 @@
+<!DOCTYPE html  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta name="GENERATOR" content="SciTE - www.Scintilla.org" />
+<style type="text/css">
+.S0 {
+	color: #808080;
+	background: #FFFFFF;
+}
+.S2 {
+	font-family: 'Courier New';
+	color: #007F00;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+.S3 {
+	font-family: 'Courier New';
+	color: #7F007F;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+.S5 {
+	font-weight: bold;
+	color: #00007F;
+	background: #FFFFFF;
+}
+.S8 {
+	font-weight: bold;
+	color: #0000FF;
+	background: #FFFFFF;
+}
+.S9 {
+	font-weight: bold;
+	color: #007F7F;
+	background: #FFFFFF;
+}
+.S10 {
+	font-weight: bold;
+	color: #000000;
+	background: #FFFFFF;
+}
+.S15 {
+	color: #805000;
+	background: #FFFFFF;
+}
+span {
+	font-family: 'Courier New';
+	color: #000000;
+	background: #FFFFFF;
+	font-size: 10pt;
+}
+</style>
+</head>
+<body bgcolor="#FFFFFF">
+<span><span class="S2">//</span><br />
+<span class="S2">// Xhtml.boo</span><br />
+<span class="S2">//</span><br />
+<span class="S2">// Author:</span><br />
+<span class="S2">// &nbsp;&nbsp;Jb Evain (jbevain@gmail.com)</span><br />
+<span class="S2">//</span><br />
+<span class="S2">// (C) 2006 Jb Evain</span><br />
+<span class="S2">//</span><br />
+<span class="S2">// Permission is hereby granted, free of charge, to any person obtaining</span><br />
+<span class="S2">// a copy of this software and associated documentation files (the</span><br />
+<span class="S2">// "Software"), to deal in the Software without restriction, including</span><br />
+<span class="S2">// without limitation the rights to use, copy, modify, merge, publish,</span><br />
+<span class="S2">// distribute, sublicense, and/or sell copies of the Software, and to</span><br />
+<span class="S2">// permit persons to whom the Software is furnished to do so, subject to</span><br />
+<span class="S2">// the following conditions:</span><br />
+<span class="S2">//</span><br />
+<span class="S2">// The above copyright notice and this permission notice shall be</span><br />
+<span class="S2">// included in all copies or substantial portions of the Software.</span><br />
+<span class="S2">//</span><br />
+<span class="S2">// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,</span><br />
+<span class="S2">// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF</span><br />
+<span class="S2">// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND</span><br />
+<span class="S2">// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE</span><br />
+<span class="S2">// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION</span><br />
+<span class="S2">// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION</span><br />
+<span class="S2">// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</span><br />
+<span class="S2">//</span><br />
+<br />
+<span class="S5">import</span><span class="S0"> </span>System<br />
+<br />
+<span class="S5">import</span><span class="S0"> </span>NUnit<span class="S10">.</span>Framework<br />
+<br />
+<span class="S10">[</span>TestFixture<span class="S10">]</span><br />
+<span class="S5">class</span><span class="S0"> </span><span class="S8">XhtmlTestFixture</span><span class="S10">:</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S10">[</span>Test<span class="S10">]</span><br />
+<span class="S0">&nbsp; &nbsp; </span><span class="S5">def</span><span class="S0"> </span><span class="S9">go</span><span class="S10">():</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S0"> </span><span class="S10">=</span><span class="S0"> </span>XmlBuilder<span class="S10">(</span>Console<span class="S10">.</span>Out<span class="S10">)</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>Instruct_<span class="S10">(</span><span class="S3">"xml"</span><span class="S10">,</span><span class="S0"> </span><span class="S10">{</span><span class="S3">"version"</span><span class="S0"> </span><span class="S10">:</span><span class="S0"> </span><span class="S3">"1.0"</span><span class="S10">,</span><span class="S0"> </span><span class="S3">"encoding"</span><span class="S0"> </span><span class="S10">:</span><span class="S0"> </span><span class="S3">"utf-8"</span><span class="S10">})</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>Declare_<span class="S10">(</span><span class="S3">"html"</span><span class="S10">,</span><span class="S0"> </span><span class="S3">"-//W3C//DTD XHTML 1.0 Strict//EN"</span><span class="S10">,</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span><span class="S3">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"</span><span class="S10">)</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>html<span class="S10">()</span><span class="S0"> </span><span class="S9">do</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>head<span class="S10">()</span><span class="S0"> </span><span class="S9">do</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>title<span class="S10">(</span><span class="S3">"My Projects"</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>style<span class="S10">({</span><span class="S3">"type"</span><span class="S0"> </span><span class="S10">:</span><span class="S0"> </span><span class="S3">"text/css"</span><span class="S10">})</span><span class="S0"> </span><span class="S9">do</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>Text_<span class="S10">(</span><span class="S3">"body {font-family: courier new;}"</span><span class="S10">)</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>body<span class="S10">()</span><span class="S0"> </span><span class="S9">do</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>h1<span class="S10">(</span><span class="S3">"My projects"</span><span class="S10">)</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>p<span class="S10">(</span><span class="S3">"This is a list of the projects I'm working on:"</span><span class="S10">)</span><br />
+<br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>ul<span class="S10">()</span><span class="S0"> </span><span class="S9">do</span><span class="S10">:</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>li<span class="S10">(</span><span class="S3">"Mono"</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>li<span class="S10">(</span><span class="S3">"Cecil"</span><span class="S10">)</span><br />
+<span class="S0">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </span>x<span class="S10">.</span>li<span class="S10">(</span><span class="S3">"..."</span><span class="S10">)</span><br />
+<span class="S0"></span></span>
+</body>
+</html>

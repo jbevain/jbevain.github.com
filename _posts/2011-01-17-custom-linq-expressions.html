@@ -1,0 +1,118 @@
+---
+layout: post
+title: Custom Linq Expressions 
+---
+Between .net 3.5 and .net 4.0, the <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.aspx">Linq Expression Tree API</a> changed quite a bit, going from a simple compiler supporting expressions only, to a full fledged compiler supporting expressions as well as statements, on top of which are implemented all DLR based language. For anyone working closely with this API, the <a href="http://dlr.codeplex.com/wikipage?title=Docs%20and%20specs&referringTitle=Home">Expression Tree spec</a> is a great source of information, the MSDN isn’t very helpful there.
+
+When the spec comes to describing the object model for nodes, it differentiates several kind of nodes:
+
+<img src="http://evain.net/public/et-nodes.png" />
+
+The core nodes and the common nodes are those which are implemented inside System.Linq.Expressions, and common nodes are implemented on top of the core nodes, using a process that is called reducing nodes.
+
+A reducible node is simply a node that can be compiled as a compound of core nodes. We’re not going to talk about library specific extensions, which are nodes that you would write if you were to implement, say, a LINQ provider. We'll focus on reducible nodes.
+
+I took some time last year to implement a few helper nodes that are not available in .net 4.0, but, according to the spec, may be included in a future release. They’re mapped to similar C# constructs, and are pretty useful it you generate complex code using expression trees. Here’s the list of custom expressions I added in <a href="https://github.com/jbevain/mono.linq.expressions">Mono.Linq.Expressions</a>, my project to complement the System.Linq.Expression namespace:
+
+<ul>
+<li><a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/DoWhileExpression.cs">DoWhileExpression</a></li>
+<li><a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/ForEachExpression.cs">ForEachExpression</a></li>
+<li><a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/ForExpression.cs">ForExpression</a></li>
+<li><a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/UsingExpression.cs">UsingExpression</a></li>
+<li><a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/WhileExpression.cs">WhileExpression</a></li>
+</ul>
+
+Even if those map to a C# statement, they’re suffixed with `Expression` for consistency with the whole System.Linq.Expressions namespace. Using them is as simple as, heh, adding a using directive:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+using Mono.Linq.Expressions;
+</pre>
+
+And using the factory methods on the CustomExpression class to create those new nodes:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+var d = Expression.Parameter (typeof (DisposableType), "d");
+
+var printAndDispose = Expression.Lambda<Action<DisposableType>> (
+	CustomExpression.Using (
+		d,
+		Expression.Call (typeof (Console).GetMethod (
+			"WriteLine", new [] { typeof (object) }), d)),
+	d);
+</pre>
+
+The Expression Tree API makes it easy to write custom reducible expressions, all you have to do, is to inherit from <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.expression.aspx">Expression</a>, override <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.expression.canreduce.aspx">CanReduce</a> and <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.expression.nodetype.aspx">NodeType</a>, and implement the <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.expression.reduce.aspx">Reduce method</a>:
+
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public abstract partial class CustomExpression : Expression {
+
+	public override ExpressionType NodeType {
+		get { return ExpressionType.Extension; }
+	}
+
+	public override bool CanReduce {
+		get { return true; }
+	}
+
+	/* ... */
+}
+</pre>
+
+If we take, for instance, our <a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/UsingExpression.cs">UsingExpression</a>, mapping to the C# <a href="http://msdn.microsoft.com/en-us/library/yh598w02.aspx">using statement</a>, Reduce is implemented as follows:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public override Expression Reduce ()
+{
+	var end_finally = Expression.Label ("end_finally");
+
+	return Expression.Block (
+		new [] { variable },
+		Expression.Assign (variable, disposable),
+		Expression.TryFinally (
+			body,
+			Expression.Block (
+				Expression.Condition (
+					Expression.NotEqual (variable, Expression.Constant (null)),
+					Expression.Block (
+						Expression.Call (
+							Expression.Convert (variable, typeof (IDisposable)),
+							typeof (IDisposable).GetMethod ("Dispose")),
+						Expression.Goto (end_finally)),
+					Expression.Goto (end_finally)),
+				Expression.Label (end_finally))));
+}
+</pre>
+
+Just like a C# using, it will try to execute a block, and whether the block triggered an exception or not, it will call <a href="http://msdn.microsoft.com/en-us/library/system.idisposable.dispose.aspx">IDisposable.Dispose</a> on the subject of the using statement.
+
+Wasn't that easy? Even if those nodes are pretty general, writing custom and specific nodes is a powerful and simple way to factorize code when generating code using the Expression Tree API.
+
+In the end, I added in <a href="https://github.com/jbevain/mono.linq.expressions/">Mono.Linq.Expressions</a> a <a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/CustomExpression.cs">CustomExpression</a> type, our base class for well, custom expressions. We provide a <a href="https://github.com/jbevain/mono.linq.expressions/blob/master/Mono.Linq.Expressions/CustomExpressionVisitor.cs">CustomExpressionVisitor</a> which extends the standard <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.expressionvisitor.aspx">ExpressionVisitor</a> to support our custom expressions, and the <a href="http://evain.net/blog/articles/2010/06/23/mono-linq-expressions">CSharpWriter</a> has been updated to support them as well:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+[Test]
+public void Using ()
+{
+	var arg = Expression.Parameter (typeof (IDisposable), "arg");
+
+	var lambda = Expression.Lambda<Action<IDisposable>> (
+		CustomExpression.Using (
+			arg,
+			Expression.Call (typeof (Console).GetMethod (
+				"WriteLine", new [] { typeof (object) }), arg)),
+		arg);
+
+	AssertExpression (@"
+void (IDisposable arg)
+{
+	using (arg)
+	{
+		Console.WriteLine(arg);
+	}
+}
+", lambda);
+}
+</pre>
+
+Next feature for Mono.Linq.Expressions: using <a href="http://evain.net/blog/articles/2009/04/30/reflection-based-cil-reader">Mono.Reflection</a> to turn a delegate into an expression of this delegate.

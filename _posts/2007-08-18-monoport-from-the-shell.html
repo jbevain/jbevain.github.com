@@ -1,0 +1,25 @@
+---
+layout: post
+title: Monoport from the shell
+---
+<a href="http://www.flickr.com/photos/jbevain/695975118/" title="Photo Sharing"><img src="http://farm2.static.flickr.com/1216/695975118_c8a5400f0b.jpg" width="500" height="333" alt="Sand" style="border: 2px black solid" /></a>
+
+Lately, I've found myself using <a href="http://monoport.com">monoport</a> more and more as a convenient pastebin like tool. Working on the build of Mono, I was mainly sending patches, logs or errors for instance.<br /><br />
+ Today I ended up writing <a href="http://evain.net/public/monoport">a small script</a>, that I tend to find quite useful, to post to <a href="http://monoport.com">monoport</a> from stdin.
+<br /><br />
+You want to send a patch? Easy:
+<pre>
+svn diff | monoport
+</pre>
+In return, the script will print the link to the post to stdout.
+<br /><br />
+A little editing by hand will let you change the default values for the name, the life time of the post, and the language it is written in. In any case, you can specify them like this:
+<pre>
+cat foo.patch | monoport -n:jbevain -e:f -l:diff
+</pre>
+Convenient. I'm pretty sure you can find jillions* of such scripts on the net, still, this one is mine.
+<br /><br />
+Download from here: <a href="http://evain.net/public/monoport">monoport script</a>. And as you can see, it can even <a href="http://monoport.com/4118">monoport itself</a>. Amazing.
+<br /><br/>
+*: sir, it's not a number!
+<br /><br/>

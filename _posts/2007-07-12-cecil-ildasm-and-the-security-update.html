@@ -1,0 +1,10 @@
+---
+layout: post
+title: Cecil, ildasm and the security update
+---
+<a href="http://www.flickr.com/photos/jbevain/622153915/" title="Photo Sharing"><img src="http://farm2.static.flickr.com/1346/622153915_6294683522.jpg" width="500" height="333" alt="Joutes Sètoises" style="border: 2px solid black;"/></a><br />
+<br />
+Since the last security update of the .net 2 framework, ildasm may have some issues with assemblies emitted by <a href="http://mono-project.com/Cecil">Cecil</a>. This goes from a pure ildasm crash, to methods that can't be disassembled. Plus, the behavior is sometimes random. That's clearly a regression in ildasm, because it used to work, and other disassembler are able to read the assembly (Reflector, monodis).<br />
+<br />
+Still, as it seems to happen only with assemblies emitted by Cecil, Cecil must be doing something that ildasm doesn't appreciate anymore, but on the other hand, ildasm shouldn't crash either. I've not yet been able to discover what this particular thing is. I've <a href="https://connect.microsoft.com/VisualStudio/feedback/ViewFeedback.aspx?FeedbackID=287089">submited a bug</a> to Microsoft. Let see if they can help telling what's going wrong.
+

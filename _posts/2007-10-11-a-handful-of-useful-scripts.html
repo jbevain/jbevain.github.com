@@ -1,0 +1,26 @@
+---
+layout: post
+title: A handful of useful scripts
+---
+I've just uploaded a <a href="http://evain.net/public/scripts.zip">zip file</a> containing a handful of scripts I use in my every day routine.
+
+<ul>
+  <li>
+    <b>cleol</b>: Clean the end of lines of the files passed as arguments. Accept ruby wildcards (such as * or **/*). That will replace the windows style line endings by unix style line endings, but will also remove useless white-spaces.
+  </li>
+  <li>
+    <b>clprop</b>: Clean the svn properties of the files passed as arguments. Accept ruby wildcards (such as * or **/*). That will remove the svn:executable properties, and set the svn:eol-style to native to the files.
+  </li>
+  <li>
+    <b>svnci</b>: My own script that prompt me my favorite lightweight editor to edit my ChangeLog entries.
+  </li>
+  <li>
+    <b>monoport</b>: I've detailed this one in <a href="http://evain.net/blog/articles/2007/08/18/monoport-from-the-shell">this blog entry</a>. I recently added to it the possibility to get a monoport entry printed to stdout. Typically, it allows me to apply patches directly from monoport:
+<pre>
+monoport -g:4512 | patch -p0
+</pre>
+Requires the cute library <a href="http://code.whytheluckystiff.net/hpricot/">hpricot</a>.
+  </li>
+</ul>
+
+

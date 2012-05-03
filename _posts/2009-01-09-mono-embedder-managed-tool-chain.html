@@ -1,0 +1,27 @@
+---
+layout: post
+title: Mono embedder managed tool-chain
+---
+<a href="http://www.flickr.com/photos/jbevain/2194122850/" title="sncf by Jb Evain, on Flickr"><img src="http://farm3.static.flickr.com/2343/2194122850_a85716353a.jpg" width="500" height="333" alt="sncf" style="border: 2px solid black" /></a>
+
+<a href="http://tirania.org/blog/">Miguel</a> blogged a <a href="http://tirania.org/blog/archive/2009/Jan-07.html">list of iPhone applications</a> that were made using <a href="http://unity3d.com/">Unity3D</a>, and scripted with <a href="http://mono-project.com">Mono</a>.
+
+I'm delighted to have cute applications using Mono to show, and one involves raptors!
+
+One of the concern for Unity3D is to reduce the size of the download as much as possible. And Mono certainly weight a little bit in the download. We have <a href="http://www.mono-project.com/Small_footprint">a page on our wiki</a> which describes how to reduce the size of the runtime, but am writing today about what Unity3D uses to reduce the size of the different managed parts, be it the core libraries, or the managed part of the game itself.
+
+They are using two different tools to reduce the size of the assemblies. So first of all, once the application is compiled, the first tool they use is the <a href="http://www.mono-project.com/Linker">Mono Linker</a>. I already had the occasion to <a href="http://evain.net/blog/articles/2006/08/21/link-to-link">write about the linker</a>, as it is a tool that I started writing during the second Google Summer of Code I spent as a student, and that I've worked on when I joined Novell. The linker is today a mature piece of code, that is exercised during every single Mono build, as it is <a href="http://www.mono-project.com/MoonlightNotes">used to produce the Moonlight 2.0 version of our class library</a>.
+
+So they are using the linker, and this makes sure that everything that is not needed by the game or the engine is removed from the assemblies.
+
+When the linking stage is achieved, they pre-compile the assemblies to native code using our <a href="http://www.mono-project.com/AOT">AOT (Ahead of Time) compiler</a>. This is necessary, as the iPhone prevents any JIT to run.
+
+After AOT, you end up with a native binary, and the original managed binary, which still contains the intermediate code. If the assembly has been completely AOTed, this intermediate code is no longer necessary.
+
+Here comes the second tool they're using. This is a tool which is pretty new, and that I wrote for this specific usage. It's called `mono-cil-strip`, and is now built along the traditional tools that we ship, such as ilasm or the linker. It uses a special mode of Cecil I hacked on, which preserves the original metadata structure of the assembly, but empties every single method body. It's necessary to keep the native binary in sync with the managed binary, while still removing parts of it.
+
+If you're compiling your assemblies ahead of time, and looking for some bytes to save, here's a neat way to do so.
+
+Sadly I don't have numbers handy, so I'll encourage you to give it a try, but here we are, every single iPhone application produced using Unity3D went through <a href="http://www.mono-project.com/Cecil">Cecil</a> (twice!).
+
+And that's pretty cool :)
