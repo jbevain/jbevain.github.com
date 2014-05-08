@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Cecil and the CCI</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Cecil and the CCI <small>18 Apr 2009</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/jbevain/3451856715/" title="Ponton by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3313/3451856715_6715c4c938.jpg" width="500" height="333" alt="Ponton" style="border: 2px solid black" /></a>
+
+Quite a number of friends pinged me about the <a href="http://blogs.msdn.com/hermanventer/archive/2009/04/14/a-bit-of-help-compiling-your-next-net-hosted-programming-language.aspx">recent release</a> of the <a href="http://cciast.codeplex.com/">CCI</a>, under the <a href="http://www.opensource.org/licenses/ms-pl.html">Ms-PL</a>, and were curious about my take on it, and its effect on <a href="http://www.mono-project.com/Cecil">Cecil</a> and its ecosystem.
+
+First of all, there's a bit of a story here, and I'll write it here for those who like me, love software history. Back in the years 2003 and 2004, I was working with <a href="http://www.thomasgil.com/">Thomas Gil</a>, one of my mentor and programming hero, on one of the first static aspect weaver on .net, <a href="http://aspectdng.tigris.org/">AspectDNG</a>, now abandoned. I was actively researching better ways to do <a href="http://en.wikipedia.org/wiki/Common_Intermediate_Language">CIL</a> injection.
+
+We went from raw IL text manipulation, to <a href="http://msdn.microsoft.com/en-us/library/system.reflection.aspx">Reflection</a> and <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.aspx">Reflection.Emit</a> using <a href="http://blog.lutzroeder.com/">Lutz</a>'s ILReader library, to <a href="http://rail.dei.uc.pt/">RAIL</a>, until I decide to work on Cecil.
+
+In the meantime, I've stumbled upon <a href="http://research.microsoft.com/en-us/people/mbarnett/ilmerge.aspx">ILMerge</a>, a tool from <a href="http://research.microsoft.com/en-us/people/mbarnett/">Mike Barnett</a>, and mailed him to ask what powered the tool, and he put me in contact with <a href="http://blogs.msdn.com/hermanventer/default.aspx">Herman Venter</a>, the man behind the CCI effort. I wrote Herman a couple of mails, in a terrible English, and begged him to push for a release of the CCI under a license we could use in AspectDNG. That was in March 2004.
+
+As you can guess, it quite didn't work out at that time, so I started working on Cecil. A few weeks after, <a href="http://tirania.org/blog/archive/2004/Dec-01.html">Miguel blogged</a> about the need of such library. He already had the <a href="http://www.mono-project.com/Linker">Mono Linker</a> in mind. I mailed him, got SVN access, checked in the beginning of Cecil, got <a href="http://pages.infinit.net/ctech/poupou.html">Sébastien</a> interested, etc.
+
+I had the opportunity to be invited by Microsoft to attend an informal <a href="http://research.microsoft.com/en-us/events/aop/default.aspx">AOP workshop</a> the year later, and to met with Herman, which I remember as a very nice person. I am not sure he remembers the terribly shy kid that did a terrible presentation in a terrible English. But all in all, I'm happy that five years later, my request went through.
+
+Now the CCI release in its own CodePlex page is not really a big event, as it was already released and licensed under the Ms-PL, as it's part of <a href="http://www.codeplex.com/Sandcastle">Sandcastle</a>.
+
+Anyway, Cecil is quite mature in its current form, it's used by a <a href="http://groups.google.com/group/mono-cecil/web/projects-using-cecil">fair number of (known) applications</a> (please help to improve the list), and I'm currently working on two things.
+
+The first one is a refactoring of Cecil, which vastly reduces memory consumption as well as reading/writing time. Hopefully I'll have a beta in a month or so. We have great plans for this version of Cecil, and it's consuming a lot of my time, more on this later.
+
+The second one is an extensible decompiler, <a href="http://evain.net/blog/articles/2008/12/15/cecil-decompiler">Cecil.Decompiler</a>, that will greatly benefit from the Cecil refactoring. The time I dedicate to it is a bit phagocyted by the Cecil refactoring right now, but it's certainly one of my favorite project.
+
+The CCI is a combination of Cecil, the decompiler, and something to write a decompiled AST back, which will be the natural evolution of the Cecil decompiler. Note that the CCI decompilation/compilation process is not extensible. Now that it's open source, you can hack it yourself, sadly, the CCI code is well, a bit messy to be polite, or not exactly a joy to read. Also you probably won't be able to contribute back to the CCI.
+
+Anyway, it does its job alright, and so does Cecil. Choice is always good, let's welcome the CCI in the small family of such tools. I, for one, will surprisingly keep hacking on and with Cecil :)
+
+To conclude on a very positive note, the fantastic thing about this release is that the CCI contains a fully managed PDB reader and writer. That's great news as so far, we failed to get any details about this file format. This means that we can now implement a fully managed Mono.Cecil.Pdb support, and that's just great.
+
+<b>UPDATE</b>: it appears that only the PDB reader is fully managed, the PDB writer is just a wrapper over the COM stuff, just like the current implementation of Mono.Cecil.Pdb. Well, at least it's a start.
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

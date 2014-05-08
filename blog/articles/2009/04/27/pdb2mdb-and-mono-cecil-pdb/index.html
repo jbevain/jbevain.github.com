@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - pdb2mdb and Mono.Cecil.Pdb</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>pdb2mdb and Mono.Cecil.Pdb <small>27 Apr 2009</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/jbevain/3470936776/" title="Sainte Anne by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3536/3470936776_0401d96d84.jpg" width="500" height="333" alt="Sainte Anne" style="border: 2px solid black" /></a>
+
+I always complained about the fact that debug symbols were not portable between different CLR implementations. The .net CLR consumes pdb files, which is an undocumented format. Another file format was added to the <a href="http://www.ecma-international.org/publications/standards/Ecma-335.htm">ECMA-335</a> in a late revision. I <a href="http://evain.net/blog/articles/2005/07/31/clidb-a-standard-debugging-symbol-store">wrote</a> about this file format a while ago.
+
+To sum up, it was added very late while Mono already started to use its own format (mdb) and the .net CLR doesn't understand it anyway. So even if it's not a bad format (it could use some improvements, like a GUID heap similar to the one in a .net assembly), basically no one uses it in the real world.
+
+As mentioned in a <a href="http://evain.net/blog/articles/2009/04/18/cecil-and-the-cci">recent post</a>, the CCI contains an interesting piece of code, a managed <a href="http://en.wikipedia.org/wiki/Program_database">pdb</a> reader, licensed under the Ms-PL. I extracted it, and used it to be able to better share debug symbols between the .net CLR and Mono.
+
+<h4>pdb2mdb</h4>
+
+Robert Jordan, a long time Mono contributor, first wrote a tool named pdb2mdb, to convert a pdb to a mdb. The issue is that it was based on a combination of COM and the mixed mode assembly ISymWrapper which comes with the .net framework. All in all, it means that this version of pdb2mdb could only run on on the .net framework on Windows.
+
+With the managed pdb reader, it was very easy to write a fully managed pdb2mdb tool. It's now available in <a href="http://anonsvn.mono-project.com/source/trunk/mcs/tools/pdb2mdb">svn</a>, and it will come with every other developer tool, such as ilasm or the linker. It's very easy to use. Say you're deploying a .net application on Linux, you have an assembly Foo.dll, and a Foo.pdb file, just use:
+
+<pre>
+pdb2mdb Foo.dll
+</pre>
+
+And the tool will generate a file Foo.dll.mdb, that Mono can use to display line information in stack traces.
+
+<h4>Mono.Cecil.Pdb</h4>
+
+<a href="http://anonsvn.mono-project.com/source/trunk/cecil/pdb">Mono.Cecil.Pdb</a> is an assembly that you use together with Cecil, to have line information at the IL level. It's used by tools such as Gendarme, or MoMA, to help diagnose and locate issues.
+
+I've integrated the managed reader, and the folks from NDepend were kind enough to beta test it. After a few fixes, the managed reader passed all NDepend tests, and was performing a lot better than its unmanaged counterpart. It's now the default, and only the pdb writer uses the ISymWrapper approach.
+
+It would be an interesting challenge for someone to try to write a managed writer from the information gathered in the reader. It may not be easy though.
+
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

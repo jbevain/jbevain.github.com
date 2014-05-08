@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Cecil migration path</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Cecil migration path <small>07 Sep 2006</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      I started working on what will be the next version of <a href="http://www.mono-project.com/Cecil">Cecil</a>. I have introduced quite a bunch of breaking changes. For instance I've removed all the pointless interfaces that were part of the old API.
+
+To ensure a smooth transition, I've written a migration script that you can use to port your code. The script is located <a href="http://mono.myrealbox.com/source/trunk/cecil/lib/CodeGen/cecil-mig.rb">here</a>. It has been succesfully used on a few projects in the cecil module, like <a href="http://www.mono-project.com/Gendarme">Gendarme</a> or permview. It also works for the parts of <a href="http://www.db4o.com">db4o</a> which depend upon Cecil.
+
+All you need is a ruby interpreter:
+
+<pre>
+ruby cecil-mig.rb path/to/source
+</pre>
+
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

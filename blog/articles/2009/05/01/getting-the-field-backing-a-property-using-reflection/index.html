@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Getting the field backing a property using Reflection</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Getting the field backing a property using Reflection <small>01 May 2009</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/jbevain/3488735265/" title="Pluie, Pluie by Jb Evain, on Flickr"><img src="http://farm4.static.flickr.com/3362/3488735265_ec8a06bec5.jpg" width="500" height="333" alt="Pluie, Pluie" style="border: 2px solid black" /></a>
+
+<b>Update</b>: the code has been moved to its own <a href="http://github.com/jbevain/mono.reflection">project page</a>.
+
+Let's consider you're writing a LINQ provider. And that you need to opimize the following LINQ query:
+
+<pre>
+from Person p in db where p.Age > 18 select p;
+</pre>
+
+Let's add a constraint. The underlying storage engine stores data according to the field name. That would mean that when generating the query for the underlying storage system, you'll have to map <pre>p.Age</pre> into something that the underlying storage system will understand. In that case, a field. And all you have is a <a href="http://msdn.microsoft.com/en-us/library/system.linq.expressions.memberexpression.aspx">MemberExpression</a>, giving you a <a href="http://msdn.microsoft.com/en-us/library/system.reflection.propertyinfo.aspx">PropertyInfo</a>.
+
+The issue here is that you have no way to get the <a href="http://msdn.microsoft.com/en-us/library/system.reflection.fieldinfo.aspx">FieldInfo</a> backing the property. If you think about it, it's normal. The setter and the getter of a property being traditional methods, they can contain any kind of code. Meaning that you can't always find a field backing the property.
+
+But in that case, it's ok, we're only interested in those forms of properties:
+
+<pre>
+public int Age { get; set; }
+
+private string name;
+
+public string Name {
+    get { return name; }
+    set { name = value; }
+}
+</pre>
+
+Of course here what's interesting is how to actually get the field. I've used the <a href="http://evain.net/blog/articles/2009/04/30/reflection-based-cil-reader">Reflection based CIL reader</a> I wrote about yesterday. I disassemble the body of either a getter or a setter of the property, and if it matches a simple IL pattern, that is, if it looks to be a property backed by a field, I simply return the field.
+
+To do the actual IL matching, I re-implemented something <a href="http://blogs.codehaus.org/people/bamboo/">Rodrigo</a> and I wrote when we were working on instrumenting assemblies at <a href="http://developer.db4o.com/">db4o</a>. The code itself is pretty neat.
+
+Anyway, that's another opportunity to write a simple extension method:
+
+<pre>
+public static FieldInfo GetBackingField (this PropertyInfo self)
+</pre>
+
+Again, you're more than welcome to have a look at <a href="http://gist.github.com/104006">the implementation</a>. Don't forget that it depends on the <a href="http://gist.github.com/104001">Reflection based CIL reader</a>.
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

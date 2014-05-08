@@ -1,7 +1,5 @@
-destination: ./_site
-safe: true
+permalink: /
 pygments: true
-server_port: 8888
-baseurl: /
-permalink: /blog/articles/:year/:month/:day/:title
+safe: true
+permalink: /p/:title
 auto: true

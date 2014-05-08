@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Assembly Round Tripping and much more</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Assembly Round Tripping and much more <small>13 Aug 2005</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><p>
+Thanks to another few hacks today on Cecil, I can now do funny things. Assembly Round Tripping is one of them. It just mean that I can now load an Assembly with Cecil, and write it back. Without loss of data. Anyway Cecil for the moment does not deal with a lot of data :) Here is a sample code so that you can figure out by yourself:
+</p>
+
+<pre class="csharpcode">
+<span class="kwrd">using</span> Mono.Cecil;
+
+<span class="kwrd">class</span> RoundTrip {
+
+    <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        <span class="kwrd">string</span> file = <span class="str">"hello.exe"</span>
+        <span class="kwrd">for</span> (<span class="kwrd">int</span> i = 0; i &lt; 10; i++)
+            AssemblyFactory.SaveAssembly (AssemblyFactory.GetAssembly (
+                file, LoadingType.Aggressive), file, AssemblyKind.Console);
+    }
+}
+</pre>
+
+<p>
+Doing this ten times it plain useless. But now you are <b>sure</b> that the assembly is well round tripped.
+</p>
+
+<p>
+Interesting huh ? But yeah, a bit useless as it is. If Cecil is able to read and assembly and write it back, it should also be possible to modify it. To go further, I have to assume that you've read the <a href="http://evain.net/blog/index.php/2005/08/13/249-the-thousand-nights-and-a-night-of-hacking">precedent post</a>, that reveals the Hello World example. Now let's read this wonderful piece of code that will modify the Hello World
+:
+</p>
+
+<pre class="csharpcode">
+<span class="kwrd">using</span> Mono.Cecil;
+<span class="kwrd">using</span> Mono.Cecil.Cil;
+
+<span class="kwrd">class</span> Pre_AOP_Era {
+
+    <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        <span class="kwrd">string</span> file = <span class="str">"hello.exe"</span>
+        IAssemblyDefinition asm = AssemblyFactory.GetAssembly (
+            file, LoadingType.Aggressive);
+
+        ITypeDefinition hello = asm.MainModule.Types [<span class="str">"Test.Hello"</span>];
+        IMethodDefinition main = hello.Methods [0]; <span class="rem">// get the Main method</span>
+        ICilWorker worker = main.Body.GetWorker ();
+        
+        InsertBeforeRetInstruction (
+            worker, worker.Create (OpCodes.Ldstr, <span class="str">"And from Jb too!"</span>));
+        InsertBeforeRetInstruction (
+            worker, worker.Create (OpCodes.Call, <span class="kwrd">typeof</span> (Console).GetMethod (
+                    <span class="str">"WriteLine"</span>, <span class="kwrd">new</span> Type [] {<span class="kwrd">typeof</span> (<span class="kwrd">string</span>)})));
+                    
+        AssemblyFactory.SaveAssembly (asm, file, AssemblyKind.Console);
+    }
+    
+    <span class="kwrd">static</span> <span class="kwrd">void</span> InsertBeforeRetInstruction (ICilWorker worker, IInstruction ins)
+    {
+        IMethodBody body = worker.GetBody ();
+        IInstruction ret = body.Instructions [body.Instructions.Count - 1];
+        worker.InsertBefore (ret, ins);
+    }
+}
+</pre>
+
+<p>
+Basically, I retrieve here the type and a method defined in the precedent example, and using I add two instructions before the last instruction of this method. I just call Console.WriteLine with a new string "And from Jb too!" The ICilWorker interface defines methods to create and manipulate CIL streams. As it is not very complete, I've written here a little method to help in this task.
+</p>
+<p>
+Unsurprisingly, by invoking the new executable, you'll be greeted twice:
+</p>
+
+<pre>
+newton:~/Sources/temp jbevain$ mono hello.exe 
+Hello from Cecil!
+And from Jb too!
+</pre>
+
+<p>
+This feature of Cecil is a terribly exciting one. It leds to many applications, including the re-write of the core of <a href="http://aspectdng.sf.net">AspectDNG</a>, the Aspect Weaver Thomas Gil and I are working on.
+</p>
+
+<p>
+Don't be desapointed, but once again, this is still not in SVN, but it shows the lasts progress of Cecil. I hope you enjoy it as much as I do :)
+</p>
+
+<p>
+Oh, and because he loves <a href="http://www.dotnetguru.org/blogs/sebastienros/index.php?title=great_tools_help_you_to_make_great_tools&more=1&c=1&tb=1&pb=1">pictures</a>, here is one of <a href="http://blogs.dotnetguru.org/sebastienros/">Sebastien Ros</a>, one of my mentor, and me:
+</p>
+
+<p align="center">
+<img src="http://evain.net/pics/seb_and_me.jpg" />
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

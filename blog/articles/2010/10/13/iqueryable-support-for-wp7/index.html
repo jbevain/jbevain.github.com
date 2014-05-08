@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - IQueryable support for WP7</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>IQueryable support for WP7 <small>13 Oct 2010</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      Or how to use APIs missing from the WP7 SDK.
+
+<a href="http://www.flickr.com/photos/jbevain/4959819424/" title="Plitvice de Jb Evain, sur Flickr"><img src="http://farm5.static.flickr.com/4105/4959819424_ffc57952c7.jpg" width="500" height="333" alt="Plitvice" style="border: 2px solid black" /></a>
+
+Monday saw the official launch of Windows Phone 7, at this occasion, I downloaded the SDK to see how it compares to <a href="http://monotouch.net">MonoTouch</a> and <a href="http://monodroid.net">MonoDroid</a>. Basically, it’s based on the Compact Framework Base Class Library, on top of which is exposed the Silverlight UI API.
+
+The Compact Framework has historically targeted devices with limited capabilities. The Compact Framework BCL is a trimmed down version of the vanilla .net BCL. One notable missing feature is runtime code generation through System.Reflection.Emit. As such, you can’t use DynamicMethods, nor can you compile assemblies on the device, and nor can you compile Expression Trees. You can expect to find missing tidbits sprinkled throughout the whole BCL. But luckily for us, there’s Mono.
+
+The Mono BCL being licensed under the MIT/X11, you can easily take C# code from our libraries and use it inside your own applications. And that whenever our code is not tied to a runtime feature. This means that you couldn’t bring System.Reflection.Emit to WP7, but that you could probably bring XmlDocument with a bit of work.
+
+Basically, this reminded me of what db4o did to <a href="http://evain.net/blog/articles/2008/09/22/linq-expression-trees-on-the-compact-framework">bring support for Expression Trees to the Compact Framework</a> using code from Mono. I figured I’d try to do the same for WP7. If you played with the WP7 SDK, you probably know that you have access to Expression Trees, and the compiler can emit them without any issue. But LambdaExpression and Expression of T don’t have their Compile method you’re used to. And WP7 is missing IQueryable and folks.
+
+So as an example, I extracted our Expression Tree interpreter, which is used, guess what, when you can’t compile Expression Trees at runtime, and our IQueryable support. Here we are, by just referencing this System.Linq.dll, you can write code such as:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+using System.Linq;
+
+var data = new [] { 1, 2, 3, 4, 5, 6, 7, 8 };
+
+var query = data.AsQueryable ();
+query.Where (i => i % 2 == 0);
+
+int count = query.Count ();
+</pre>
+
+Or:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+using System.Linq.Expressions;
+
+var p1 = Expression.Parameter (typeof (string), "x");
+var p2 = Expression.Parameter (typeof (string), "y");
+
+Expression<Func<string, Func<string, Func<string>>>> e =
+	Expression.Lambda<Func<string, Func<string, Func<string>>>> (
+		Expression.Lambda<Func<string, Func<string>>> (
+			Expression.Lambda<Func<string>> (
+				Expression.Call (
+					typeof (string).GetMethod ("Concat", new [] { typeof (string), typeof (string) }),
+					new [] { p1, p2 }),
+				new ParameterExpression [0]),
+			new [] { p2 }),
+		new [] { p1 });
+
+var f = e.Compile ();
+var f2 = f ("Hello ");
+var f3 = f2 ("World !");
+
+var result = f3 ();
+</pre>
+
+(Crazy, I know)
+
+You can simply take the <a href="http://evain.net/tmp/System.Linq-bin.zip">assembly</a> and reference it from your projects, or compile yourself <a href="http://evain.net/tmp/System.Linq-src.zip">the code</a>. Let me know if this has been useful to you.
+
+To conclude, I’d say don’t hesitate to take code from Mono to fill the voids in the WP7 SDK. Who knows if you won’t end up contributing missing parts or filing bugs afterwards.
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

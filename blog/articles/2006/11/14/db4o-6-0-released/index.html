@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - db4o 6.0 released</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>db4o 6.0 released <small>14 Nov 2006</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      I've very thrilled to announce the release today of <a href="http://www.db4o.com/about/news/release/2006_11_14.aspx">db4o 6.0</a>, our brand new release.
+
+Some lucky folks have seen at the Mono Meeting some bits of what's new in it. <a href="http://blogs.codehaus.org/people/bamboo/">Rodrigo</a> and I've been mainly busy bringing some love to the public API, to make it look like a real .net/Mono library. And now that's what it really is.
+
+<pre>
+using Db4objects.Db4o;
+using Db4objects.Db4o.Query;
+
+class Test
+{
+    public static void Main()
+    {
+        using (IObjectContainer store = Db4oFactory.OpenFile("test.yap"))
+        {
+            IQuery q = store.Query();
+            q.Constrain(typeof(Person));
+
+            foreach (Person p in q.Execute())
+            {
+                Console.WriteLine (p);
+            }
+        }
+    }
+}
+</pre>
+
+Here is the sample extracted from <a href="http://developer.db4o.com/blogs/product_news/archive/2006/11/15/new-conventions-for-db4o-on-net.aspx">my blog post</a> where I describe all the changes.
+
+That's the release I've been the more excited with. You can feel that it's all packed with love. Go <a href="http://www.db4o.com/about/news/release/2006_11_14.aspx">give it a try</a>.
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

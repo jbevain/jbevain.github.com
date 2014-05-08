@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - About an inherent limitation, and a possible solution</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>About an inherent limitation, and a possible solution <small>11 Jun 2007</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      The <a href="http://www.mono-project.com/Linker">linker</a> is a static tool. It uses <a href="http://www.mono-project.com/Cecil">Mono.Cecil</a> to analyze the assemblies, modify them, and save them back in a linked form.<br />
+<br />
+That means that the linker can only know about the assemblies and the types that are statically referenced. You already see where I'm going to. Mono, just like .net, provides very interesting, and also widely used, ways to dynamically load assemblies and types. The common use case is a plug-in framework for instance, where assemblies are loaded when asked to.<br />
+<br />
+As an example, let's have a look to a piece of code I've faced when working on linking MoMa:<br />
+<pre>
+static Socket() {
+	Assembly ass;
+			
+	try {
+		ass = Assembly.Load (Consts.AssemblyMono_Posix);
+	} catch (FileNotFoundException) {
+		return;
+	}
+				
+	unixendpointtype=ass.GetType("Mono.Posix.UnixEndPoint");
+
+	Type[] arg_types=new Type[1];
+	arg_types[0]=typeof(string);
+	ConstructorInfo cons=unixendpointtype.GetConstructor(arg_types);
+
+	object[] args=new object[1];
+	args[0]="nothing";
+
+	unixendpoint=cons.Invoke(args);
+}
+</pre>
+From <a href="http://anonsvn.mono-project.com/source/trunk/mcs/class/System/System.Net.Sockets/Socket.cs">System.Net.Sockets.Socket </a> in System.dll<br />
+<br />
+This code is fairly simple to understand. The the Socket class constructor will be called, the assembly Mono.Posix will be loaded, and an instance of the type Mono.Posix.UnixEndPoint will be created, and its constructor will be invoked.<br />
+<br />
+That's the marvel of the reflection API. But as you can see, everything here is dynamic. The assembly System.dll contains no reference to the Mono.Posix.UnixEndPoint type, and no reference to the assembly Mono.Posix.<br />
+<br />
+The linker can take two different kind of input. The first one is of course an assembly. It's obvious what it does, the linker will link everything necessary for this particular assembly. The second one, is an xml file, that describes what types to save, and you can even choose in those types which fields or methods you want to link.<br />
+<br />
+So, when linking your assemblies, you have to know if you're doing some dynamic loading. If yes, you have to tell the linker using a xml descriptor which dynamic types you want to save, otherwise, they may very well be not present in the output assemblies.<br />
+<br />
+That's a little bit painful, and that forces you to maintain a list of such types/assemblies. To ease your pain, I wrote something that I find really useful, even if it's not completely done yet.<br />
+<br />
+Guys, that was the biggest introduction ever to talk about a little piece of code. <a href="http://anonsvn.mono-project.com/source/trunk/cecil/linker/profiler/link.c">This little guy</a> is a profiler for Mono, that is simply triggered every time the JIT will leave a method.<br />
+<br />
+It's goal is to produce an xml file that the linker understand, from a running application. For instance, before linking MoMa, I used:<br />
+<pre>
+# mono --profile=link:moma.xml ./MoMa.exe
+</pre>
+<br />
+Then I've simply used MoMa like I would if I was simply analysing an application to submit a report, and at the end, I had an interesting moma.xml file. When opening it, I've seen:<br />
+<pre>
+<linker>
+	<!-- ... -->
+	<assembly fullname="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+		<type fullname="Mono.Posix.UnixEndPoint">
+			<method signature="System.Void .ctor(System.String)" />
+		</type>
+		<!-- ... -->
+	</assembly>
+	<!-- ... -->
+</linker>
+</pre>
+As we can see, during the execution, we've been using the constructor of the type Mono.Posix.UnixEndPoint in the assembly Mono.Posix. That's an information the linker would not have been able to know. By using the profiler, one can prepare the linker to do its job with more data that it would have been able to gather by itself.<br />
+<br />
+And that's pretty good to be able to do it without requiring me to write xml descriptors for every possible type that is dynamically loaded.<br />
+<br />
+See, I can even write a few lines of C, isn't that amazing?<br />
+<br />
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

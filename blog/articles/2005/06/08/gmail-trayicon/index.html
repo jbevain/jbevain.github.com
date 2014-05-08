@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - GMail TrayIcon</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>GMail TrayIcon <small>08 Jun 2005</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><h3>I've played with Lego today</h3>
+<p>
+Well, it was some kind of special Lego... I've taken bricks from :
+</p>
+<ul>
+  <li>A nice tutorial about <a href="http://mono-project.com/GtkSharpNotificationIcon">Tray Icons for GNOME</a></li>
+  <li>An perfect and simple <a href="http://rlove.org/log/2004110201">example</a></li>
+  <li>An amazing <a href="http://www.mono-live.com/">Mono Live</a></li>
+  <li>GPL icons from a nice <a href="http://johnvey.com/features/gmailapi/">project</a></li>
+  <li>A simple <a href="http://code.google.com/apis.html#gmail">ATOM feed</a></li>
+</ul>
+<p>
+With those bricks, I've made a very simple and totally incomplete <b>GMail Notification Icon for GNOME</b>. It looks like that:
+</p>
+<p align="center">
+<img src="http://evain.net/public/gmailtray_nomail.png" />
+</p>
+<p align="center">
+<img src="http://evain.net/public/gmailtray_mails.png" />
+</p>
+<p>
+Yet, it's no really usable. Username and password are hard-coded, and you just know if you have, or not, unread mails.
+</p>
+<p>
+If someone is willing to use my code to produce a better applet, he would not have a lot of things to do. The list is simple:
+</p>
+<ul>
+  <li>Use GConf to save username and password</li>
+  <li>Write a really simple window to ask user whether or not username and password have to be stored</li>
+  <li>Write another simple window to be shown when a new mail arrives, and then disappears</li>
+</ul>
+<p>
+This nice person will find the code here: <a href="http://evain.net/public/gmailtray.tar.gz">GMailTray</a>
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

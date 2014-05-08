@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Mono.Cecil 0.9 "cecil/light"</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Mono.Cecil 0.9 "cecil/light" <small>12 Apr 2010</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/66164549@N00/2260970300/" title="The Thinker by law_keven, on Flickr"><img src="http://farm3.static.flickr.com/2255/2260970300_57b0d91e03_d.jpg" width="500" height="375" alt="Statue" style="border: 2px solid black;" /></a>
+
+I started working on <a href="http://mono-project.com/Cecil">Mono.Cecil</a> during the fall of 2004. In its current incarnation, it served me and <a href="http://groups.google.com/group/mono-cecil/web/projects-using-cecil">a lot of people</a> very well. But looking at it now, it aged quite a bit. The code still compiles on .net 1.1, is using old conventions, doesn’t have a real test suite, is quite memory hungry, and is not that optimized. Which doesn’t prevent it to be a useful and wide used library, but looking back; I could have done a lot of things differently.
+
+And doing things differently is basically what I’ve been doing for the past two years in my free time. What originally started as a refactoring of Mono.Cecil for the decompiler, ended up as a rewrite from the ground up. And today I’m excited to make public what is the next version of Cecil, which I’ve been fondly calling “cecil/light”.
+
+Let’s start with a warning; this version contains breaking changes with the previous API. I didn’t promise API stability for the previous code, but this iteration of Mono.Cecil, <a href="http://github.com/jbevain/cecil/tree/0.9">tagged 0.9</a>, is a huge step towards 1.0 and API stability.
+
+But let’s focus for a while on the bright and new side. Mono.Cecil 0.9 comes with:
+
+* A cleaned and genericized API, I took this opportunity to clean some parts I hated in the old API.
+* A smaller and easier to maintain C#3 code base (Mono.Cecil 0.9 compiled with optimizations by csc is about 250k against almost 400k for 0.6) which only requires a .net 2.0 compatible runtime.
+* A test suite which is very easy to augment.
+* Better support for pdb and mdb files and strong name assemblies.
+* Complete support for PE32+ assemblies.
+* Bug fixes that weren’t possible without large changes in the old code.
+* Less memory consumption.
+* Lazy loading of every metadata element.
+* Speed and optimizations.
+* Complete Silverlight support.
+* A beginning of documentation on a wiki.
+* A collection of extension methods to add features to Cecil when they’re not necessary to the core assembly.
+
+I ported a few of my projects to this version of Cecil already, and it shows great results. I didn’t spend more than four hours per project to adjust the code in a branch. There’s a <a href="http://wiki.github.com/jbevain/cecil/migration">migration</a> page on the wiki to help you. If it doesn’t answer your question, reach us on the mono-cecil group.
+
+I took special care in testing this version, and waited to have something stable to make it public, but just like every rewrite, you might face bugs or regressions. I’m confident it won’t take long before it gets really stable. A few people had early access to this code base, and ensured it was at least working as well as the previous version, if not better most of the time.
+
+I moved the development of this version of Mono.Cecil to <a href="http://github.com/jbevain/cecil">github</a> while I’ll be maintaining the previous code in the <a href="http://anonsvn.mono-project.com/source/trunk/mcs/class/Mono.Cecil">Mono tree</a>, as it’s still used by a lot of tools there, that I haven’t migrated yet.
+
+We'll also be working on writing more documentation for 1.0, both as a serie of HOWTOs, and as a more traditional class library documentation. But everyone that has already used Cecil should be up to speed promptly.
+
+Thanks to everyone that helped, whether they knew it or not. Many thanks to Rodrigo B. de Oliveira, Carlo Kok, Sébastien Pouliot, and all the contributors to Mono.Cecil. Thanks also to Jeroen Frijters for his fantastic work on his IKVM.Reflection.Emit assembly in which I sometimes took inspiration. Enjoy!
+
+<i>Picture by <a href="http://www.flickr.com/photos/66164549@N00/2260970300/">law_keven</a> <a href="http://creativecommons.org/licenses/by-sa/2.0/deed.en">some rights reserved</a></i>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

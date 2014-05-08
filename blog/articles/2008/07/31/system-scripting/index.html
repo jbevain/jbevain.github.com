@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - System.Scripting</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>System.Scripting <small>31 Jul 2008</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/jbevain/271257238/" title="Plume by Jb Evain, on Flickr"><img src="http://farm1.static.flickr.com/117/271257238_e544c3fe8e.jpg" width="500" height="333" alt="Plume" style="border: 2px solid black" /></a>
+
+Two days ago, I was sharing what I was foreseeing for <a href="http://evain.net/blog/articles/2008/07/29/net-4-c-4-and-the-dlr">C# 4 and .net 4</a>, and the integration with the DLR.
+
+Turns out that today, by reading <a href="http://blogs.msdn.com/shrib/archive/2008/07/30/idispatch-support-on-in-ironpython-beta-4.aspx">this post</a>, my eye was caught by the namespace I was thinking about: System.Scripting.
+
+But this post is about the beta 4 of <a href="http://www.codeplex.com/IronPython/">IronPython</a> 2, that hasn't been released yet. But heh, it's easy to forget that latest IronPython code can be <a href="http://www.codeplex.com/IronPython/SourceControl/ListDownloadableCommits.aspx">downloaded from CodePlex's TFS</a>.
+
+And it indeed turns out, that in the latest revision, Microsoft.Scripting.Core namespace has been renamed to System.Scripting, and that the DLR AST has been merged into System.Linq.Expressions.
+
+So yeah, I guess we can safely admit that C# 4 will have statements support inside expression trees.
+
+And that .net 4 will contain very cute features for dynamically generating programs, without resorting to emitting plain IL, simply using the DLR, contained in a new assembly (or namespace, if they move some to parts to System.Core), System.Scripting.
+
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

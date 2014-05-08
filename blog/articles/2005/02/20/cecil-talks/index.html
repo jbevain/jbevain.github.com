@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Cecil talks</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Cecil talks <small>20 Feb 2005</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br />A long time I have not blogged. Mainly spent my time working on Cecil. Better than a long talk, here is an example of what Cecil is able to do now. There is a name for programs that write themselves, I've forget it, and my example is not really one of them. My example is a very simple C# console program, but it will print its CIL representation, almost like ildasm.<br />
+<br />
+I've not included the source and the result on the blog, because they are not really short. The source is viewable here : <a href="http://evain.net/public/cecil_il_sample_source.html">C# source</a>. We simply load an assembly using Cecil, then we print the content of the methods. Easy no ? Let's take a look at the output : <a href="http://evain.net/public/cecil_il_sample_output.html">here</a>.<br />
+<br />
+I have still a lot of work to do, and the API is not really stable, but I'm close to what I want. Once I'll get it, I think I'll call for contribution on this blog, to achieve the writing part of Cecil. Stay tuned !<br />
+<br />
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

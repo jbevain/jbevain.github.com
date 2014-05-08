@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - C# 3 and LINQ on .net 2</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>C# 3 and LINQ on .net 2 <small>14 Sep 2008</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <a href="http://www.flickr.com/photos/jbevain/429558558/" title="Macro test by Jb Evain, on Flickr"><img src="http://farm1.static.flickr.com/167/429558558_58ec2bf043.jpg" width="500" height="333" alt="Macro test" style="border: 2px solid black" /></a>
+
+My friend <a href="http://codebetter.com/blogs/patricksmacchia/">Patrick</a> is <a href="http://codebetter.com/blogs/patricksmacchia/archive/2008/09/14/targeting-the-net-runtime-version-2-0-matters.aspx">wondering</a> what's the best way to use the type <a href="http://msdn.microsoft.com/en-us/library/bb359438.aspx">System.Collections.Generic.HashSet</a>, in <a href="http://www.ndepend.com">NDepend</a>, that he wants to deploy on computers with only .net 2 installed.
+
+Well it's pretty simple, the best way to get it, is to get it from <a href="http://www.mono-project.com">Mono</a>. The code is licensed under the MIT/X11 license, allowing multiple usages.
+
+And that's not all. If you're dying to use C#3 or LINQ to objects in your application, but that you want to be able to release on .net 2 only, you can simply compile and ship Mono's implementation of System.Core. Microsoft's C# compiler, csc 3.5, won't have any issue using it, et voilà, you'll get an application using LINQ or C#3, and deployable on .net 2.
+
+Mono's implementation of System.Core is available in SVN <a href="http://anonsvn.mono-project.com/source/trunk/mcs/class/System.Core/">here</a>.
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

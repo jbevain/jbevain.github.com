@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - IL fun fact: not is not !</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>IL fun fact: not is not ! <small>30 Jan 2012</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      Picture yourself working on crafting a specific piece of CIL.
+
+You need to write the compiled equivalent of:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+bool b = ...;
+bool n = !b;
+</pre>
+
+It would be tempting to write:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldloc b
+not
+stloc n
+</pre>
+
+Except that it would not always work. <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.opcodes.not.aspx">not</a> doesn't negate booleans, it computes the bitwise complement of the value on the stack. It's also not to be confused with the <a href="http://msdn.microsoft.com/en-us/library/system.reflection.emit.opcodes.neg.aspx">neg</a> opcode, which negates a value, as in a multiplication by -1.
+
+The usual pattern to negate a boolean is:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldloc b
+ldc.i4.0
+ceq
+stloc n
+</pre>
+
+But that's not really fun, is it?
+
+Actual fun fact: there's a misused “not” in the ECMA 335 in the  example of the section 14.5 of the partition II.
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

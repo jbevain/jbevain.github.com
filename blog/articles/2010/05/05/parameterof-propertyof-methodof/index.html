@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - parameterof, propertyof, methodof</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>parameterof, propertyof, methodof <small>05 May 2010</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      Every C# programmer knows about the keyword typeof, in essence, it returns an instance of System.Type for a given type. It’s used everywhere you have to do reflection on a type known at compilation time. You could achieve pretty much the same with the methods GetType(string) of both Module and Assembly, but the nice thing about typeof is that it’s refactoring proof.
+
+Now, every C# programmer also knows that typeof is the only keyword with such abilities. There’s no parameterof, propertyof, methodof, or eventof to access other metadata members. The web is filled with ways to emulate a type safe reflection though. Lately, expression trees helped a lot. This post presents a proof of concept piece of code for a different approach.
+
+Considering the following types:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static class Parameter {
+
+	public static ParameterInfo Of<T> (T value)
+	{
+		return null;
+	}
+}
+
+public static class Property {
+	
+	public static PropertyInfo Of<T> (T value)
+	{
+		return null;
+	}
+
+	public static PropertyInfo Of (MethodInfo method)
+	{
+		const BindingFlags all = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+
+		foreach (var property in method.DeclaringType.GetProperties (all))
+			if (method.Equals (property.GetGetMethod (true)))
+				return property;
+
+		return null;
+	}
+}
+
+public static class Method {
+
+	public static MethodInfo Of<T> (Func<T> value)
+	{
+		return null;
+	}
+
+	public static MethodInfo Of<T1, TRet> (Func<T1, TRet> value)
+	{
+		return null;
+	}
+
+	public static MethodInfo Of (Action value)
+	{
+		return null;
+	}
+
+	public static MethodInfo Of<T> (Action<T> value)
+	{
+		return null;
+	}
+}
+
+</pre>
+
+They are basically just stubs, but let’s use them anyway:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+class Program {
+
+	static void Main (string [] args)
+	{
+		ParameterInfo parameter = Parameter.Of (args);
+
+		Console.WriteLine ("Parameter of args: {0}", parameter);
+
+		PropertyInfo rank = Property.Of (args.Rank);
+
+		Console.WriteLine ("Property of rank: {0}", rank);
+
+		MethodInfo foo = Method.Of<int> (Foo);
+
+		Console.WriteLine ("Foo method: {0}", foo);
+
+		MethodInfo bar = Method.Of<int> (Bar);
+
+		Console.WriteLine ("Bar method: {0}", bar);
+	}
+
+	static int Foo ()
+	{
+		return 42;
+	}
+
+	static void Bar (int b)
+	{
+		return;
+	}
+}
+</pre>
+
+Of course if you run the code as is, everything will be null. What I did is that I wrote a little Cecil rewriter that will detect the calls to the different <i>Of</i> methods, and rewrite them to something that will give you the expected results.
+
+So for instance, the Parameter.Of call is compiled as:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldarg.0
+call class [mscorlib]System.Reflection.ParameterInfo Parameter::Of<string[]>(!!0)
+</pre>
+
+But is rewritten in two parts. First we emit at the beginning of the method a way to retrieve of the ParameterInfo of the current method:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldtoken method void Program::Main(string[])
+call class [mscorlib]System.Reflection.MethodBase [mscorlib]System.Reflection.MethodBase::GetMethodFromHandle(valuetype [mscorlib]System.RuntimeMethodHandle)
+callvirt instance class [mscorlib]System.Reflection.ParameterInfo[] [mscorlib]System.Reflection.MethodBase::GetParameters()
+stloc $reflection_parameters
+</pre>
+
+And we simple replace the <i>Of</i> call with a load from the $reflection_parameters array:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldloc $reflection_parameters
+ldc.i4 0
+ldelem.ref
+</pre>
+
+For methods it's a bit different, they are compiled as:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldnull
+ldftn int32 Program::Foo()
+newobj instance void class [mscorlib]System.Func`1<int32>::.ctor(object,native int)
+call class [mscorlib]System.Reflection.MethodInfo Method::Of<int32>(class [mscorlib]System.Func`1<!!0>)
+</pre>
+
+And we rewrite them to remove the creation of a delegate:
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+ldtoken method int32 Program::Foo()
+call class [mscorlib]System.Reflection.MethodBase [mscorlib]System.Reflection.MethodBase::GetMethodFromHandle(valuetype [mscorlib]System.RuntimeMethodHandle)
+castclass  [mscorlib]System.Reflection.MethodInfo
+</pre>
+
+For properties, it’s exactly the same, but we have to inject a call to a method that will retrieve the PropertyInfo the get method belongs to.
+
+If you’re interested you can read <a href="http://gist.github.com/390902">the rewriter code</a>. It’s pretty simple, but is nowhere complete, and I doubt anyone would use it anyway, but it’s still a pretty cool hack.
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

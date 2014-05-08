@@ -1,0 +1,33 @@
+---
+layout: nil
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>evain.net</title>
+  <link href="http://evain.net"/>
+  <link type="application/atom+xml" rel="self" href="http://evain.net/index.xml"/>
+  <updated>{{ site.time | date_to_xmlschema }}</updated>
+  <id>http://evain.net/</id>
+  <author>
+    <name>Jb Evain</name>
+  </author>
+
+  {% for post in site.posts  limit: 3 %}
+  {% if post.standalone == null %}
+  <entry>
+    <id>http://evain.net{{ post.id }}</id>
+    <link type="text/html" rel="alternate" href="http://evain.net{{ post.url }}"/>
+    <title>{{ post.title }}</title>
+    <updated>{{ post.date | date: "%Y-%m-%dT%H:%M:%SZ" }}</updated>
+    <published>{{ post.date | date: "%Y-%m-%dT%H:%M:%SZ" }}</published>
+    <author>
+      <name>Jb Evain</name>
+      <uri>http://evain.net/</uri>
+    </author>
+    <content type="html">{{ post.content | xml_escape }}</content>
+  </entry>
+  {% endif %}
+  {% endfor %}
+
+</feed>

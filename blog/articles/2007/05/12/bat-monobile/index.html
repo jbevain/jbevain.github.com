@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Bat Monobile</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Bat Monobile <small>12 May 2007</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      These last days, I've been working on a little framework based both on <a href="http://boo.codehaus.org">Boo</a> and <a href="http://nunit.com">NUnit</a> called Bat. Bat stands for Boo Assembly Tester, and is attended to simplify the creation of unit tests for everything <a href="http://mono-project.com/Cecil">Cecil</a> based.<br />
+<br />
+For instance, let say I want to test the way Cecil emits assemblies, with a very simple Hello World assembly, here is the declaration of the test:<br />
+
+<pre>
+[Test]
+public void CreateHelloWorld ()
+{
+	RunWriteAssemblyTestCase ("HelloWorld");
+}
+</pre>
+
+And here is the actual test:<br />
+
+<pre>
+"""
+Hello, world!
+"""
+
+worker = Main.CilWorker
+
+worker.Emit(OpCodes.Ldstr, "Hello, world!")
+worker.Emit(OpCodes.Call, ImportConsoleWriteLine())
+worker.Emit(OpCodes.Ret)
+</pre>
+
+The method RunWriteAssemblyTestCase will compile the Boo script, run it, and thus create a new assembly, run the assembly, and ensure that the output match the documentation of the Boo script.<br />
+<br />
+The framework provides helper to test the ability to read assemblies, or to round trip them, and ensure that they still work as expected. The good thing is that it should be pretty easy to create it's own helpers on top of that to write tests for assembly linking, merging, or for whatever tool that manipulates Cecil assemblies.<br />
+<br />
+If you're interested in writing unit tests for Cecil, you can checkout at <a href="http://anonsvn.mono-project.com/source/trunk/cecil/bat">the bat project</a> and the updated <a href="http://anonsvn.mono-project.com/source/trunk/cecil/tests">Mono.Cecil.Tests project</a>. People working with Cecil, don't hesitate to submit new unit tests now that it's both fun and easy!<br/>
+<br/>
+This work is eavily influenced by what my friend <a href="http://blogs.codehaus.org/people/bamboo/">Rodrigo</a> and I have done on our different projects that always end up manipulating assemblies :) Thank you Rodrigo!
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

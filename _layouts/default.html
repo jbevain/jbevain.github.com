@@ -1,10 +1,17 @@
-<!doctype html>
-<html>
-  <head>
-    <title>evain.net {% if page.title %} - {{ page.title }}{% endif %}</title>
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-  </head>
-  <body style="font-family: Monaco;">
+<!DOCTYPE html>
+
+<meta name="description" content="{{ page.title }}">
+<meta name="author" content="Jb Evain">
+
+<meta charset="utf8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" href="/index.xml">
+
+<link rel="stylesheet" href="/css/style.css">
+
+<title>{{ page.title }}</title>
+
+{% include asside.html %}
+
 {{ content }}
-  </body>
-</html>

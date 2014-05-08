@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - What do you mean, linking?</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>What do you mean, linking? <small>08 Jun 2007</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      According to my blog, it's been 24 days that I've joined the <a href="http://www.mono-project.com">Mono Team</a> at <a href="http://www.novell.com">Novell</a>, and I haven't yet blogged about what I am doing there.<br />
+<br />
+Appart from a week in Seattle with <a href="http://blogs.codehaus.org/people/bamboo/archives/001577_on_my_way_to_the_dlr_compiler_lab.html">Rodrigo</a> and <a href="http://tirania.org/blog/archive/2007/May-23.html">Miguel</a>, where we've been attending a Compiler Lab hosted by Microsoft, I've been mainly working on the <a href="">linker</a>.<br />
+<br />
+The linker is something Miguel wants to have since quite a bit of time, as one can find references to it on his blog in <a href="http://tirania.org/blog/archive/2004/Dec-01.html">posts that are almost three years old</a>. Thanks to the Google Summer of Code 2006, I started working on it.<br />
+<br />
+To make it short, here is a definition of what a linker is, here is the definition extracted from <a href="http://www.mono-project.com/Linker">its page</a> on the Mono wiki:<br />
+<blockquote>The linker is a tool one can use to only ship the minimal possible set of functions that a set of programs might require to run as opposed to the full libraries.</blockquote>
+Writing a linker is not very hard. It's basically a mark and sweep operation, but the mark operation have to be very intrusive, and you have to dig in every piece of metadata so you don't forget any type, or any methods. Plus, there is also a few types in the BCL that are used inside the runtime (like StackOverflowException for instance), and some of them with a field layout that is tied to an unmanaged representation in the runtime (AppDomain for instance). That makes it very easy to forget something.<br />
+<br />
+But today, after much fighting, I managed to have a non-trivial application working after a complete linking of itself and the base class library. This application is now famous, and have been used by thousands of users to test if their own application could be run of Mono. You've recognized <a href="http://www.mono-project.com/MoMa">MoMa</a>. It maybe looks like a simple application, but it uses stuff like System.Windows.Forms, System.Web.WebServices or even Mono.Cecil to do its job. And all it all, it's not that simple, believe me.<br />
+<br />
+So, here is a little table where I've gathered some data about the size of the assemblies referenced by MoMa, before, and after having ben linked:
+<pre>
+before after assembly
+---------------------------------------
+  9K  5.5K  Accessibility.dll
+129K   34K  ICSharpCode.SharpZipLib.dll
+ 40K   24K  MoMA.Analyzer.dll
+ 44K   33K  MoMA.exe
+350K  277K  Mono.Cecil.dll
+ 70K  5.0K  Mono.Data.Tds.dll
+172K   15K  Mono.Posix.dll
+282K  7.5K  Mono.Security.dll
+2.4M  1.9M  mscorlib.dll
+115K   75K  System.Configuration.dll
+778K  354K  System.Data.dll
+1.4M  679K  System.dll
+429K  201K  System.Drawing.dll
+ 45K  6.5K  System.EnterpriseServices.dll
+129K  7.5K  System.Security.dll
+ 26K  6.5K  System.Transactions.dll
+1.9M  676K  System.Web.dll
+342K   88K  System.Web.Services.dll
+2.9M  1.8M  System.Windows.Forms.dll
+1.2M  834K  System.Xml.dll
+----------
+ 13M    7M
+</pre>
+So for the MoMa case, it's almost a reduction of half the size of the binaries needed to run it. Pretty good heh?<br />
+<br />
+That's really convenient for people who embed Mono for the sake of running their own application. By using the linker, they can ship with only what they need to run their application.<br />
+<br />
+Next time, I'll tell you about some limitations of the linker, and the solution to get over them.
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - There and back again</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>There and back again <small>20 Apr 2005</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><p>
+I'm back !
+</p>
+<p>
+I've spent a lot of time in the east of France, in Strasbourg. It's a nice city, with lots of students. Sadly, I left my camera in Paris. Teaching XML, and making XML Schema writing (by hand) attractive for students is definitively not an easy thing. I've also visited friends from <a href="http://www.evaluant.com">Evaluant</a> in Mulhouse.
+</p>
+<p>
+I've started working on <a href="http://mono.myrealbox.com/viewcvs/trunk/cecil/lib/?rev=43353">Cecil</a> again, I'm implementing the writing part of the API. You'll be able to use both Mono.Cecil and System.Reflection object model, for instance, you can add custom attributes using those two factory methods defined in the ICustomAttributeProvider interface :
+</p>
+<pre class="csharpcode">
+ICustomAttribute DefineCustomAttribute (IMethodReference ctor);
+ICustomAttribute DefineCustomAttribute (ConstructorInfo ctor);
+</pre>
+<p>
+And Cecil will automatically add needed references to assemblies and types. Fun to do, hope it will be fun to use. Sebastien is using Cecil to make some drawing, read <a href="http://pages.infinit.net/ctech/200503.html">part 1</a> and <a href="http://pages.infinit.net/ctech/20050418-1109.html">part 2</a> of his work.
+</p>
+<p>
+I've bought the Dragon Book !
+</p>
+<p>
+<a href="http://www.amazon.com/exec/obidos/ASIN/0201100886/qid=1114029812/sr=2-1/ref=pd_bbs_b_2_1/104-1250642-1187966"><img src="http://evain.net/public/dragonbook.jpg" alt="The Dragon Book" border="0" /></a>
+</p>
+<p>
+Nice to read, but it was expansive... I've just found on amazon that they are writing a third version of the book, another best seller to come, take a look <a href="http://www.amazon.com/exec/obidos/tg/detail/-/0321131436/qid=1114029860/sr=1-6/ref=sr_1_6/104-1250642-1187966?v=glance&amp;s=books">  there</a>. I've bought <a href="http://www.amazon.com/exec/obidos/ASIN/0596006543/qid=1114030201/sr=2-1/ref=pd_bbs_b_2_1/104-1250642-1187966">AspectJ Cookbook</a> too, I had to, there is a monkey on the cover ! A good book, I now have few ideas for an <a href="http://aspectdng.sourceforge.net">AspectDNG</a> in action...
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

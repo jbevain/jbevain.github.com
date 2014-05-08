@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - A river of T</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>A river of T <small>09 Aug 2010</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <p>Generic collections, iterators and Linq all have in common a single interface: <i>IEnumerable&lt;T&gt;</i>. If you’ve been writing C# code lately, I bet you wrote your fair share of methods taking or returning IEnumerables.</p>
+
+<p><a href="http://boo.codehaus.org">Boo</a> (among other marvels) has a cute syntactic shorthand for it. You can write <i>T*</i> instead of <i>IEnumerable[of T]</i>. Of course <a href="http://stackoverflow.com/questions/794369/should-c-introduce-a-syntactic-short-hand-for-ienumerablet">people would really like to have that in C# as well</a>. Sure <i>T*</i> would be nice, but it’s already used for pointers. Some other suggestions in the stackoverflow question involve using the <i>#</i> suffix, or <i>{}</i>. On my side, I quite like the idea of re-using <i>~</i>. It’s only used by the bitwise complement operator in C# (and by finalizers, thanks Scott for the heads up), and if you look at it with a bit of poetry, it kind of look like a river, a stream. And what’s an <i>IEnumerable&lt;T&gt;</i> but a stream of <i>T</i>?</p>
+
+<p>Now discussing wishes for the next version of C# is nice and all, but I felt like hacking a bit on mcs, <a href="http://www.mono-project.com/CSharp_Compiler">Mono’s C# compiler</a> tonight, and in less than half an hour of grepping through the code, I had a working version of <a href="http://gist.github.com/514682">a patch</a> that would enable this syntactic sugar.</p>
+
+<p>Let’s take a very poorly implemented set of Linq operators:</p>
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+using System;
+using System.Collections.Generic;
+
+static class Enumerable {
+
+	public static IEnumerable&lt;T&gt; Concat&lt;T&gt; (this IEnumerable&lt;T&gt; source, IEnumerable&lt;T&gt; other)
+	{
+		foreach (var item in source)
+			yield return item;
+
+		foreach (var oitem in other)
+			yield return oitem;
+	}
+
+	public static IEnumerable&lt;TResult&gt; Select&lt;TSource, TResult&gt; (this IEnumerable&lt;TSource&gt; source, Func&lt;TSource, TResult&gt; selector)
+	{
+		foreach (var item in source)
+			yield return selector (item);
+	}
+
+	public static IEnumerable&lt;TResult&gt; SelectMany&lt;TSource, TResult&gt; (this IEnumerable&lt;TSource&gt; source, Func&lt;TSource, IEnumerable&lt;TResult&gt;&gt; selector)
+	{
+		foreach (var item in source)
+			foreach (var sub_item in selector (item))
+				yield return sub_item;
+	}
+
+	public static IEnumerable&lt;T&gt; Where&lt;T&gt; (this IEnumerable&lt;T&gt; source, Func&lt;T, bool&gt; predicate)
+	{
+		foreach (var item in source)
+			if (predicate (item))
+				yield return item;
+	}
+}
+
+</pre>
+
+<p>With my <a href="http://gist.github.com/514682">patch</a>, you could write instead:</p>
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+using System;
+
+static class Enumerable {
+
+	public static T~ Concat&lt;T&gt; (this T~ source, T~ other)
+	{
+		foreach (var item in source)
+			yield return item;
+
+		foreach (var oitem in other)
+			yield return oitem;
+	}
+
+	public static TResult~ Select&lt;TSource, TResult&gt; (this TSource~ source, Func&lt;TSource, TResult&gt; selector)
+	{
+		foreach (var item in source)
+			yield return selector (item);
+	}
+
+	public static TResult~ SelectMany&lt;TSource, TResult&gt; (this TSource~ source, Func&lt;TSource, TResult~&gt; selector)
+	{
+		foreach (var item in source)
+			foreach (var sub_item in selector (item))
+				yield return sub_item;
+	}
+
+	public static T~ Where&lt;T&gt; (this T~ source, Func&lt;T, bool&gt; predicate)
+	{
+		foreach (var item in source)
+			if (predicate (item))
+				yield return item;
+	}
+}
+
+</pre>
+
+<p>
+I let the reader decides for himself which version is the most readable. It's pretty much the same debate as the one for nullable types. Also note that this is just a toy patch, mainly for the sake of digging a bit in mcs, but it’s an interesting experiment nevertheless.
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

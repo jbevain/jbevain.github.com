@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Beautiful Morning.</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Beautiful Morning. <small>09 Aug 2005</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><pre>
+newton:~/Sources/temp jbevain$ monodis dummy.dll 
+.assembly 'dummy'
+{
+  .hash algorithm 0x00000000
+  .ver  0:0:0:0
+}
+
+.module Dummy // GUID = {1764306C-0167-41BE-86B8-52ED3980F771}
+</pre>
+<p>
+Pretty simple assembly huh? Well, I've never been as happy to see the output of monodis. After three days of hard work, it is what Cecil produced while running this code:
+</p>
+<pre class="csharpcode">
+<span class="kwrd">using</span> System;
+
+<span class="kwrd">using</span> Mono.Cecil;
+
+<span class="kwrd">public</span> <span class="kwrd">class</span> EntryPoint {
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">void</span> Main ()
+    {
+        Console.WriteLine (<span class="str">"Running ..."</span>);
+        WriteDummyAssembly ();
+        Console.WriteLine (<span class="str">"... Ended"</span>);
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">void</span> WriteDummyAssembly ()
+    {
+        IAssemblyDefinition asm = AssemblyFactory.DefineAssembly (
+            <span class="str">"dummy"</span>, <span class="str">"Dummy"</span>, TargetRuntime.NET_1_1);
+        AssemblyFactory.SaveAssembly (asm, <span class="str">"dummy.dll"</span>, AssemblyKind.Dll);
+    }
+}</pre>
+<p>
+This does not looks very complicated but believe me, writing PE binary are neither simple nor fun. The good news is that both Mono and Cecil are able to read this assembly. I mean, Cecil can read assemblies it has produced, wow, isn't there some kind of beauty here ? The bad news is that Microsoft's Framework still throws me an error, but heh!
+</p>
+<p>
+Ok ok, stop blogging, go back to work.
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

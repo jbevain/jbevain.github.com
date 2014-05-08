@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Quand Microsoft ne respecte pas ses standards</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Quand Microsoft ne respecte pas ses standards <small>21 Nov 2004</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br />Etant en train d'�crire une librairie pour manipuler des fichiers CIL, j'impl�mente b�tement la partie Metadata du standard ECMA-335. Et comme je suis un gar�on courageux, je travail sur de grosses librairies. Au hasard la mscorlib et System.Web.
+Et quelle ne fut pas ma surprise de constater que sur un point pr�cis, mes tests unitaires flanchaient. Dans le standard, on peut lire page 187, � la premi�re ligne du tableau, Image Base,	Always 0x400000 (see Section 23.1). D'accord me dis-je.<br />
+<br />
+Et bien non, pour la mscorlib on a 0x79780000, et pour System.Web on a 0x7a090000. Bon, c'�tait un gros titre pour pas grand chose, mais du coup, comment je fais des tests unitaires s�rieux moi hein ? Surtout qu'il y en a un ou deux autres comme �a. On va se consoler en se disant que �a sert surement � quelque chose.<br />
+<br />
+Ah, et pour tous les barjos ou curieux comme moi, mes deux r�f�rences :
+<ul>
+	<li><a href="http://www.amazon.fr/exec/obidos/ASIN/0321154932/qid%3D1101053130/171-7351345-6568224" target="amazon" >CLI Annotated Standard (Merci � Eric Verni�)</a></li>
+	<li><a href="http://www.amazon.fr/exec/obidos/ASIN/0735615470/qid%3D1101053091/171-7351345-6568224" target="amazon" >Inside IL Assembler</a></li>
+</ul>
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - And you thought XLinq was cool?</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>And you thought XLinq was cool? <small>01 May 2006</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <p>
+Today, I'm stuck to bed due to something that appears to be a Gastroenteritis.
+Don't worry, I won't give any detail, but wow, I've forgot I contain so much
+<i>fluids</i>.
+</p>
+<p>
+Please notice that there is no relation between XLinq and Gastroenteritis.
+</p>
+<p>
+I've read with pleasure <a href="http://www.xml.com/lpt/a/2006/01/04/creating-xml-with-ruby-and-builder.html">this article</a> about a new way
+to create xml files using ruby. And I've wonder how can I have the same
+thing on Mono. All I needed, was a language which supports duck typing.
+I have <a href="http://boo.codehaus.org/">boo</a>. I'm not a sitting duck Miles!
+</p>
+<p>
+I took me a little more than an hour to have something working like the ruby library.
+I've translated the end of the article, which is about the creation of a xhtml document.
+Here is <a href="http://evain.net/public/xhtml.boo.html">my boo version</a>
+</p>
+<pre>
+import System
+
+import NUnit.Framework
+
+[TestFixture]
+class XhtmlTestFixture:
+
+    [Test]
+    def go():
+        x = XmlBuilder(Console.Out)
+
+        x.Instruct_("xml",
+            {"version" : "1.0", "encoding" : "utf-8"})
+
+        x.Declare_("html", "-//W3C//DTD XHTML 1.0 Strict//EN",
+            "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd")
+
+        x.html() do:
+            x.head() do:
+                x.title("My Projects")
+                x.style({"type" : "text/css"}) do:
+                    x.Text_("body {font-family: courier new;}")
+
+            x.body() do:
+                x.h1("My projects")
+
+                x.p("The projects I'm working on:")
+
+                x.ul() do:
+                    x.li("Mono")
+                    x.li("Cecil")
+                    x.li("...")
+</pre>
+<p>
+<a href="http://evain.net/public/xmlbuilder.zip">Here is the project</a> of the whole thing, including unit tests.
+</p>
+<p>
+Notice that it could of course be improved, especially, the XmlBuilder thing could
+extends XmlTextWriter. But this was simple enough for me. Cool huh?
+</p>
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Type 6 IOC, weaving the dependency</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Type 6 IOC, weaving the dependency <small>16 Dec 2004</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><blockquote>
+Everybody's gone weavin',<br />
+Weavin' D.N.G. !<br />
+</blockquote>
+<br />
+Life is a beach, let's try a new meta aspect : ReplaceConstructorCall,
+and by the way, discover a new type of IOC, not constructor based, not setter based,
+everything is done by AspectDNG. Maybe this is not even IOC. Don't care, it's cool.<br />
+<br />
+I've written this today, it's some kind of proof of concept. It is in CVS now, but maybe it will
+evolve or change. IOC is one buzz word of today. In one of his (famous) article, in <a href="http://dotnetguru.org/article.php?sid=347">French</a>,
+and in <a href="http://www.dotnetguru.org/us/modules.php?op=modload&amp;name=News&amp;file=article&amp;sid=24">English</a>, Sami Jaber describes 3 types of commonly used IOC, interface based, getter based, and constructor based.
+I have named this  blog entry after this <a href="http://www.theserverside.com/news/thread.tss?thread_id=30341">article</a> on tss. Mainly
+because I'm not really serious. However, I think that AOP may "eclipse" IOC.<br /> An example is coming.<br />
+<br />
+The beginning, a very simple set of base classes :<br />
+<br />
+<pre class="csharpcode">
+<span class="rem">// base.cs</span>
+<span class="kwrd">namespace</span> AspectDNG.Sample {
+
+    <span class="kwrd">public</span> <span class="kwrd">interface</span> IComplexSystem {
+        <span class="kwrd">void</span> DoTheWholeThing(<span class="kwrd">string</span> a);
+    }
+    
+    <span class="kwrd">public</span> <span class="kwrd">class</span> MockSystem : IComplexSystem {
+        <span class="kwrd">public</span> MockSystem() {}
+        <span class="kwrd">public</span> <span class="kwrd">void</span> DoTheWholeThing(<span class="kwrd">string</span> a) {}
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">class</span> Pono {
+        
+        <span class="kwrd">private</span> <span class="kwrd">string</span> m_a;
+        <span class="kwrd">private</span> IComplexSystem m_system = <span class="kwrd">new</span> MockSystem();
+            
+        <span class="kwrd">public</span> Pono(<span class="kwrd">string</span> a) {
+            m_a = a;
+        }
+        
+        <span class="kwrd">public</span> <span class="kwrd">void</span> TryTheThing() {
+            m_system.DoTheWholeThing(m_a);
+        }
+    }
+    
+    <span class="kwrd">public</span> <span class="kwrd">class</span> EntryPoint {
+        
+        <span class="kwrd">public</span> <span class="kwrd">static</span> <span class="kwrd">void</span> Main(<span class="kwrd">string</span>[] args) {
+            Pono p = <span class="kwrd">new</span> Pono(<span class="str">"HELLO IOC6 !"</span>);
+            p.TryTheThing();
+        }
+    }
+}
+</pre>
+<br />
+What can we see there ? An interface, describing a complex system we want to use, then a Mock object, that may be avoided,
+but that is there for type safety, and for bookmarking. After this you find a plain old .net object, that depends on
+our complex system. The entry point creates the Pono object, and ask him to call its dependency. If you compile that and call it, nothing will
+happens. Let's weave the dependencies ! Here is my aspect :<br />
+<br />
+<pre class="csharpcode">
+<span class="rem">// aspect.cs</span>
+<span class="kwrd">namespace</span> AspectDNG.Sample {
+    
+    <span class="kwrd">using</span> AspectDNG;
+    
+    [Insert(<span class="str">"module:"</span>)]
+    <span class="kwrd">public</span> <span class="kwrd">class</span> RealComplexSystem : IComplexSystem {
+        
+        [ReplaceConstructorCall(<span class="str">"* *.MockSystem::.ctor()"</span>)]
+        <span class="kwrd">public</span> RealComplexSystem() {}
+        
+        <span class="kwrd">public</span> <span class="kwrd">void</span> DoTheWholeThing(<span class="kwrd">string</span> a) {
+            System.Console.WriteLine(a.ToLower());
+        }
+    }
+}
+</pre>
+This is a concrete implementation of my complex service. I use custom attributes to describe that I want RealComplexSystem to be
+inserted in the main module of the target assembly, and I use my new ReplaceConstructorCall. It's explicit, every call to the constructor
+of MockSystem will be replaced by the constructor of RealComplexSystem. It rocks no ?<br />
+<br />
+If I execute this, my complex system will do its job :<br />
+<pre>
+D:/temporary/adng&gt;AspectDNG -dw base.exe aspect.dll
+D:/temporary/adng&gt;base
+hello ioc6 !
+D:/temporary/adng&gt;
+</pre>
+<br />
+So, what do you think about this ?<br />
+
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

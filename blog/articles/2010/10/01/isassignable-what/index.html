@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - IsAssignable what?</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>IsAssignable what? <small>01 Oct 2010</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      I've <a href="http://twitter.com/jbevain/status/18703683699">tweeted</a> it before, <a href="http://jacksonh.tumblr.com/">Jackson</a> <a href="http://jacksonh.tumblr.com/post/947513238/tired-of-getting-isassignablefrom-wrong-public">tumblered</a> it in return, but after commenting on a StackOverflow answer where the poster got it wrong, commenting:
+
+<blockquote>I always seem to turn that call around.</blockquote>
+
+I felt that I needed to broaden this grand hack. If you're like me, and apparently like a lot of coders out there, you tend to always get <a href="http://msdn.microsoft.com/en-us/library/system.type.isassignablefrom.aspx">Type.IsAssignableFrom</a> wrong on the first try, then you need this extension method:
+
+
+<pre name="code" class="c-sharp:nocontrols:nogutter">
+public static bool IsAssignableTo (this Type self, Type type)
+{
+	if (self == null)
+		throw new ArgumentNullException ("self");
+	if (type == null)
+		throw new ArgumentNullException ("type");
+
+	return type.IsAssignableFrom (self);
+}
+</pre>
+
+Somehow, even if IsAssignableFrom is more «left to rightish», preserving the side of the arguments a real assignment would have, I understand IsAssignableTo faster. For what it's worth, I've used it extensively while writing our .net 3.5 implementation of System.Linq.Expressions, and it served me well.
+
+Have a great friday. 
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>

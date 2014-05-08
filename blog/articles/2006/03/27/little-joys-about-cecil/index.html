@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+  <head>
+    <title>evain.net  - Little joys about Cecil</title>
+    <meta charset="utf-8" />
+    <style> body { font-family: "Consolas", Monaco, "Courier New", Courier, mono, serif; } </style>
+  </head>
+  <body>
+<div class="container">
+  <h1>Little joys about Cecil <small>27 Mar 2006</small></h1>
+  <hr />
+  <div class="row">
+    <div class="span16">
+      <br /><p>
+Few times ago, Miguel asked me a little tool, which basically round-trip an assembly using Cecil. It's sole purpose is to test the ability of Cecil to read and write without errors any assembly. I'll use it here to demonstrate the results of today's work. If ever you want to have a look at it, you'll find it in svn here: <a href="http://mono.myrealbox.com/source/trunk/cecil/tools/">/trunk/cecil/tools</a>
+</p>
+<pre>
+
+C:\cecil&rsaquo;dir
+ Volume in drive C has no label.
+ Volume Serial Number is 50F3-EB89
+
+ Directory of C:\cecil
+
+03/27/2006  06:12 PM    &lsaquo;DIR&rsaquo;          .
+03/27/2006  06:12 PM    &lsaquo;DIR&rsaquo;          ..
+01/30/2006  12:20 PM           311,296 C5.dll
+03/27/2006  06:10 PM             3,584 cecil-roundtrip.exe
+03/27/2006  06:03 PM           382,464 Mono.Cecil.dll
+               3 File(s)        697,344 bytes
+               2 Dir(s)  10,192,011,264 bytes free
+
+C:\cecil&rsaquo;cecil-roundtrip.exe C5.dll C5.rt.dll
+Assembly C5, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+   successfully roundtripped to C5.rt.dll
+
+C:\cecil&rsaquo;peverify C5.rt.dll
+
+Microsoft (R) .NET Framework PE Verifier.  Version  2.0.50727.42
+Copyright (c) Microsoft Corporation.  All rights reserved.
+
+All Classes and Methods in C5.rt.dll Verified.
+
+C:\cecil&rsaquo;
+
+</pre>
+
+<p>
+Sorry for the Windows output but heh, their peverify and ildasm are much better than ours.
+</p>
+<p>
+So, what can we see here? The point is that Cecil (SVN HEAD) is now able to round-trip without any error the most terrifying assembly for generics stuff: the great C5 library. There is now very few things missing inside Cecil to reach the 2.0 ready status.
+</p>
+<p>
+You know what? I'm happy!
+</p>
+
+    </div>
+  </div>
+</div>
+
+    <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-369117-1']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="/css/SyntaxHighlighter.css"></link> 
+    <script language="javascript" src="/js/shCore.js"></script> 
+    <script language="javascript" src="/js/shBrushCSharp.js"></script> 
+    <script language="javascript"> 
+      dp.SyntaxHighlighter.ClipboardSwf = "/js/clipboard.swf";
+      dp.SyntaxHighlighter.HighlightAll("code");
+    </script>
+  </body>
+</html>
