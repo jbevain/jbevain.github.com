@@ -5,18 +5,19 @@ title: Jb Evain
 
 <article id="home">
 
-	<p>
-	Hi! I'm <abbr title="Jean-Baptiste">Jb</abbr>, a &ldquo;obviously french&rdquo; programmer. I'm the founder of <a href="http://syntaxtree.com">SyntaxTree</a>, a developer tools company. Want to get in touch? Drop me <a href="mailto:jb@evain.net">an email</a>!<br /><br />
-	I <a href="http://twitter.com/jbevain">tweet</a>, I write <a href="http://github.com/jbevain">code</a>, I maintain a <a href="http://linkedin.com/in/jbevain">r&eacute;sum&eacute;</a>, and sometimes I write.
-	</p>
+<p>
+Hi! I'm <abbr title="Jean-Baptiste">Jb</abbr>, an &ldquo;obviously french&rdquo; programmer. I'm the founder of <a href="http://syntaxtree.com">SyntaxTree</a>, a developer tools company. Want to get in touch? Drop me <a href="mailto:jb@evain.net">an email</a>!<br /><br />
+I <a href="http://twitter.com/jbevain">tweet</a>, I write <a href="http://github.com/jbevain">code</a>, I maintain a <a href="http://linkedin.com/in/jbevain">r&eacute;sum&eacute;</a>, and sometimes I write.
+</p>
 
-	<h3>Articles</h3>
+<h3>Articles</h3>
 
-    <ul>
-        {% for post in site.posts limit:100 %}
-        {% if post.standalone == null %}
-        <li><time datetime="{{ post.date }}">{{ post.date | date_to_string }}</time><a href="{{ post.url }}">{{ post.title }}</a>
-        {% endif %}
-        {% endfor %}
-    </ul>
+<ul>
+    {% for post in site.posts limit:100 %}
+    {% if post.standalone == null %}
+    <li><time datetime="{{ post.date }}">{{ post.date | date_to_string }}</time><a href="{{ post.url }}">{{ post.title }}</a>
+    {% endif %}
+    {% endfor %}
+</ul>
+
 </article>
