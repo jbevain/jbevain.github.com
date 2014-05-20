@@ -9,7 +9,7 @@ body {margin: 0}
 body > article {
   line-height: 1.6em;
   display: block;
-  max-width: 600px;
+  max-width: 620px;
   margin: 40px auto;
   padding: 20px 10px 0;
 }
@@ -33,35 +33,8 @@ footer:before {
   margin: 20px;
 }
 
-#comments {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 10px;
-}
-
-#comments:not(.showme) {
-  display: none;
-}
-
 a { color:#009FFF; text-decoration:none; }
 a:hover { text-decoration: underline; }
-
-.tldr {
-  color: #009FFF;
-  font-style: italic;
-}
-
-.tldr:before {
-  content: "tldr; ";
-  font-size: 80%;
-  color: black;
-  font-style: normal;
-}
-
-.tldr > strong {
-  font-style: normal;
-  color: black;
-}
 
 /* Sidebar */
 
