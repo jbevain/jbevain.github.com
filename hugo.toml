@@ -1,0 +1,102 @@
+baseURL = "https://evain.net/"
+title = "Jb Evain"
+theme = "hugo-coder"
+languageCode = "en"
+defaultContentLanguage = "en"
+enableEmoji = true
+enableRobotsTXT = true
+
+[pagination]
+pagerSize = 10
+
+[permalinks]
+posts = "/p/:slug/"
+
+[mediaTypes."application/atom+xml"]
+suffixes = ["xml"]
+
+[outputFormats.Atom]
+mediaType = "application/atom+xml"
+baseName = "atom"
+isPlainText = false
+rel = "alternate"
+
+[outputs]
+home = ["HTML", "RSS", "Atom"]
+
+[markup]
+[markup.highlight]
+noClasses = false
+
+[markup.goldmark]
+[markup.goldmark.renderer]
+unsafe = true
+
+[params]
+author = "Jb Evain"
+info = ["Software engineer", "Developer tools"]
+description = "Jb Evain's personal website"
+keywords = "blog,developer tools,.net,mono,cecil,unity"
+avatarURL = "https://avatars.githubusercontent.com/u/79284?s=240"
+homeImage = "images/whitesands.jpg"
+dateFormat = "January 2, 2006"
+since = 2004
+colorScheme = "auto"
+hideColorSchemeToggle = false
+fediverseCreator = "@jbevain@gamedev.place"
+customSCSS = ["scss/home.scss"]
+
+[taxonomies]
+category = "categories"
+series = "series"
+tag = "tags"
+author = "authors"
+
+[[params.social]]
+name = "Email"
+icon = "fa-solid fa-envelope fa-2x"
+weight = 1
+url = "mailto:jb@evain.net"
+
+[[params.social]]
+name = "GitHub"
+icon = "fa-brands fa-github fa-2x"
+weight = 2
+url = "https://github.com/jbevain"
+
+[[params.social]]
+name = "LinkedIn"
+icon = "fa-brands fa-linkedin fa-2x"
+weight = 3
+url = "https://linkedin.com/in/jbevain"
+
+[[params.social]]
+name = "Bluesky"
+icon = "fa-brands fa-bluesky fa-2x"
+weight = 4
+url = "https://bsky.app/profile/jb.evain.net"
+
+[[params.social]]
+name = "Mastodon"
+icon = "fa-brands fa-mastodon fa-2x"
+weight = 5
+url = "https://mastodon.gamedev.place/@jbevain"
+rel = "me"
+
+[[params.social]]
+name = "RSS"
+icon = "fa-solid fa-rss fa-2x"
+weight = 6
+url = "/index.xml"
+rel = "alternate"
+type = "application/rss+xml"
+
+[[menu.main]]
+name = "Blog"
+weight = 1
+url = "posts/"
+
+[[menu.main]]
+name = "Bio"
+weight = 2
+url = "bio/"

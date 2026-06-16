@@ -1,5 +1,0 @@
-permalink: /
-pygments: true
-safe: true
-permalink: /p/:title
-auto: true

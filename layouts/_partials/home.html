@@ -1,0 +1,22 @@
+{{ $hero := .Site.Params.homeImage | default "images/whitesands.jpg" | relURL }}
+<section class="hero-home">
+  <div class="hero-home__content">
+    <p class="hero-home__eyebrow">Hi, I'm <abbr title="Jean-Baptiste">Jb</abbr>.</p>
+
+    {{ with .Site.Params.social }}
+      <ul class="hero-home__social">
+        {{ range sort . "weight" }}
+          <li>
+            <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+              {{ if .icon }}<i class="{{ .icon }}" aria-hidden="true"></i>{{ else }}{{ .name }}{{ end }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ end }}
+  </div>
+
+  <figure class="hero-home__image">
+    <img src="{{ $hero }}" alt="White Sands" />
+  </figure>
+</section>

@@ -1,0 +1,26 @@
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\"?>" | safeHTML }}
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ .Site.Title }}</title>
+  <link href="{{ .Site.BaseURL }}"/>
+  <link type="application/atom+xml" rel="self" href="{{ "atom.xml" | absURL }}"/>
+  <updated>{{ now.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+  <id>http://evain.net/</id>
+  <author>
+    <name>{{ .Site.Params.author }}</name>
+    <uri>{{ .Site.BaseURL }}</uri>
+  </author>
+  {{ range first 20 (where .Site.RegularPages "Section" "posts") }}
+  <entry>
+    <id>{{ with .Params.atomId }}{{ . }}{{ else }}{{ .Permalink }}{{ end }}</id>
+    <link type="text/html" rel="alternate" href="{{ .Permalink }}"/>
+    <title>{{ .Title }}</title>
+    <updated>{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}</updated>
+    <published>{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}</published>
+    <author>
+      <name>{{ .Site.Params.author }}</name>
+      <uri>{{ .Site.BaseURL }}</uri>
+    </author>
+    <content type="html">{{ .Content | html }}</content>
+  </entry>
+  {{ end }}
+</feed>
