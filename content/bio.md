@@ -4,7 +4,7 @@ description = "Jb Evain's Bio"
 url = "/bio/"
 +++
 
-Jb is an experienced software engineer with an entrepreneurial spirit and a passion for developer tools. He joined Microsoft's Developer Division following the acquisition of [SyntaxTree](http://syntaxtree.com), a developer tools company he founded in 2011.
+Jb is an experienced software professional with an entrepreneurial spirit and a passion for developer tools. He joined Microsoft's Developer Division in 2014 following the acquisition of [SyntaxTree](http://syntaxtree.com), a developer tools company he founded in 2011.
 
 He's the author of [Cecil](http://github.com/jbevain/cecil), an open-source .NET binary manipulation library that turned out to be useful to [many people](https://github.com/jbevain/cecil/wiki/Users).
 
