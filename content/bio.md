@@ -4,14 +4,14 @@ description = "Jb Evain's Bio"
 url = "/bio/"
 +++
 
-Jb is an experienced software professional with an entrepreneurial spirit and a passion for developer tools. He joined Microsoft's Developer Division in 2014 following the acquisition of [SyntaxTree](http://syntaxtree.com), a developer tools company he founded in 2011.
+Jb is an experienced software professional with an entrepreneurial spirit and a passion for developer tools. He joined Microsoft's Developer Division in 2014, following Microsoft's acquisition of [SyntaxTree](http://syntaxtree.com), the developer tools company he founded in 2011.
 
-He's the author of [Cecil](http://github.com/jbevain/cecil), an open-source .NET binary manipulation library that turned out to be useful to [many people](https://github.com/jbevain/cecil/wiki/Users).
+He has a long history with C# and .NET and is the original author of [Cecil](http://github.com/jbevain/cecil), an open-source .NET binary manipulation library that has proved useful to [many people](https://github.com/jbevain/cecil/wiki/Users).
 
-He's been involved in the [Mono](http://www.mono-project.com) project, an open-source implementation of the Microsoft .NET framework, for over a decade. In his youth, he was selected as a student in the very first two editions of the [Google Summer of Code](http://en.wikipedia.org/wiki/Google_Summer_of_Code) to contribute to Mono, where he spent both summers flipping bits instead of burgers.
+At Microsoft, Jb leads the .NET Gaming effort, helping game developers succeed with C# and .NET. Much of his work with partners is covered by NDAs. He also leads the Unity integrations for Visual Studio and Visual Studio Code.
 
-At Microsoft, Jb currently leads the development of the [Visual Studio Tools for Unity](https://www.visualstudio.com/features/unitytools-vs), a tool to bridge Microsoft Visual Studio and [Unity](http://www.unity3d.com), a powerful game creation editor. Before Microsoft acquired SyntaxTree, the Visual Studio Tools for Unity were named UnityVS, and grew to be used by thousands of users, from AAA studios to indies. Since the acquisition, VSTU has been downloaded hundreds of thousands of times.
+Prior to founding SyntaxTree, Jb fulfilled one of his dreams by joining the Mono team at [Novell](http://www.novell.com) under [Miguel de Icaza](http://en.wikipedia.org/wiki/Miguel_de_Icaza), where he worked on various parts of the project. He was part of the five-person team that started the MonoTouch and Mono for Android projects, which later became the foundations of [Xamarin](http://www.xamarin.com). There, he was responsible for the tooling that reduced the size of apps for deployment.
 
-Prior to creating SyntaxTree, Jb achieved one of his dreams when he joined the Mono team at [Novell](http://www.novell.com) under [Miguel de Icaza](http://en.wikipedia.org/wiki/Miguel_de_Icaza), where he worked on various parts of the project. He was part of the team of 5 that started the MonoTouch and Mono for Android projects, later becoming the foundations of [Xamarin](http://www.xamarin.com), where he was in charge of the tooling to trim down the size of apps for deployment.
+Before Novell, Jb worked at db4objects, a startup developing an open-source object-oriented database for Java and .NET. He worked on the Java database itself, the tooling used to convert its code to .NET, and .NET-specific components such as the LINQ to db4o provider.
 
-Before Novell, Jb worked at db4objects, a startup creating an open-source object-oriented database for Java and .NET. There he worked not only on the database itself, written in Java, but also on the tooling to convert the Java code to .NET, and on .NET-specific parts like the LINQ to db4o provider.
+Jb's involvement with [Mono](http://www.mono-project.com), an open-source implementation of the Microsoft .NET Framework, began even earlier. As a student, he was selected for the first two editions of the [Google Summer of Code](http://en.wikipedia.org/wiki/Google_Summer_of_Code), spending both summers contributing to Mono and flipping bits instead of burgers.
